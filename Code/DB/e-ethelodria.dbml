@@ -1,3 +1,11 @@
+Project "e-ethelodria" {
+  database_type: 'MySQL'
+  Note: '''
+    # e-ethelodria
+    ## A Crowd Sourcing Humanitarian Aid Web App.
+  '''
+}
+
 Table User [headercolor: #24BAB1]
 {
   username varchar [pk]
@@ -18,6 +26,7 @@ Table Base  [headercolor: #EB801B]
   admin varchar [ref: - User.username]
   longtitude float
   latitude float 
+  announcements integer [ref: < Announcement_List.id]
   inventory integer [ref: < Product_List.id]
 
 }
@@ -28,6 +37,12 @@ Table Announcement [headercolor: #E4A62E]
   published_in date
   needs integer [ref: < Product_List.id]
   text varchar
+}
+
+Table Announcement_List
+{
+  id integer
+  announcement integer [ref: - Announcement.id]
 }
 
 Table Product_List

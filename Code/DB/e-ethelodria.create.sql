@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS `e-ethelodria`;
 CREATE DATABASE `e-ethelodria`;
 USE `e-ethelodria`;
 
-
 CREATE TABLE `User` (
   `username` varchar(255) PRIMARY KEY,
   `password` varchar(255),
@@ -20,6 +19,7 @@ CREATE TABLE `Base` (
   `admin` varchar(255),
   `longtitude` float,
   `latitude` float,
+  `announcements` integer,
   `inventory` integer
 );
 
@@ -28,6 +28,11 @@ CREATE TABLE `Announcement` (
   `published_in` date,
   `needs` integer,
   `text` varchar(255)
+);
+
+CREATE TABLE `Announcement_List` (
+  `id` integer,
+  `announcement` integer
 );
 
 CREATE TABLE `Product_List` (
@@ -81,9 +86,13 @@ ALTER TABLE `User` ADD FOREIGN KEY (`tasks`) REFERENCES `Task_List` (`id`);
 
 ALTER TABLE `Base` ADD FOREIGN KEY (`admin`) REFERENCES `User` (`username`);
 
+ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`announcements`);
+
 ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`inventory`);
 
 ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Announcement` (`needs`);
+
+ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`announcement`) REFERENCES `Announcement` (`id`);
 
 ALTER TABLE `Product_List` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
 
