@@ -1,0 +1,99 @@
+Table User [headercolor: #24BAB1]
+{
+  username varchar [pk]
+  password varchar
+  email varchar
+  telephone varchar(15)
+  Name varchar
+  Surname varchar
+  is_admin boolean [default: false]
+  is_diasostis boolean [default: false]
+  is_citizen boolean [default: false]
+  tasks integer [ref: - Task_List.id]
+  note: 'The table where user information and their role is stored.'
+}
+
+Table Base  [headercolor: #EB801B]
+{
+  admin varchar [ref: - User.username]
+  longtitude float
+  latitude float 
+  inventory integer [ref: < Product_List.id]
+
+}
+
+Table Announcement [headercolor: #E4A62E]
+{
+  id integer
+  published_in date
+  needs integer [ref: < Product_List.id]
+  text varchar
+}
+
+Table Product_List
+{
+  id integer
+  product integer [ref: > Product.id]
+  quantity integer
+
+}
+
+Table Product [headercolor: #79AD51]
+{
+  id integer
+  name varchar
+  category integer [ref: - Category.id]
+
+}
+
+Table Details [headercolor: #99CD71]
+{
+  product integer [ref: > Product.id]
+  name varchar
+  value varchar
+}
+
+Table Category [headercolor: #2D6512]
+{
+  name varchar
+  id integer
+}
+
+Table Task  [headercolor: #CA4242]
+{
+  id integer [ref: - Task_List.task]
+  citizen varchar [ref: > User.username]
+  list integer [ref: < Product_List.id, note: 'Αν το είδος του Task είναι request, η λίστα μπορεί να περιέχει μόνο ένα είδος προϊόντος.']
+  date_in date
+  accepted_in date
+  date_out date
+  state task_state
+  type task_type
+}
+
+enum task_state {
+  published 
+  pending 
+  done
+}
+
+enum task_type {
+  request
+  offering
+}
+
+
+Table Vehicle  [headercolor: #4B82B0]
+{
+  username varchar
+  owner varchar [ref: - User.username]
+  load integer [ref: - Product_List.id]
+  katastasi varchar
+  tasks integer [ref: < Task_List.id]
+}
+
+Table Task_List
+{
+  id integer 
+  task integer 
+}
