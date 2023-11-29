@@ -82,7 +82,9 @@ CREATE TABLE `Task_List` (
   `task` integer
 );
 
-ALTER TABLE `User` ADD FOREIGN KEY (`tasks`) REFERENCES `Task_List` (`id`);
+ALTER TABLE `User` COMMENT = 'The table where user information and their role is stored.';
+
+ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `User` (`tasks`);
 
 ALTER TABLE `Base` ADD FOREIGN KEY (`admin`) REFERENCES `User` (`username`);
 
@@ -111,5 +113,3 @@ ALTER TABLE `Vehicle` ADD FOREIGN KEY (`owner`) REFERENCES `User` (`username`);
 ALTER TABLE `Vehicle` ADD FOREIGN KEY (`load`) REFERENCES `Product_List` (`id`);
 
 ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`tasks`);
-
-ALTER TABLE `User` COMMENT = 'The table where user information and their role is stored.';

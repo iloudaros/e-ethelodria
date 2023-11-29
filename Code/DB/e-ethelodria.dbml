@@ -17,7 +17,7 @@ Table User [headercolor: #24BAB1]
   is_admin boolean [default: false]
   is_diasostis boolean [default: false]
   is_citizen boolean [default: false]
-  tasks integer [ref: - Task_List.id]
+  tasks integer [ref: < Task_List.id]
   note: 'The table where user information and their role is stored.'
 }
 
