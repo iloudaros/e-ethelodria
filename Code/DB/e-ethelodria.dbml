@@ -8,56 +8,52 @@ Project "e-ethelodria" {
 
 Table User [headercolor: #24BAB1]
 {
-  username varchar [pk]
+  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  username varchar [unique]
   password varchar
   email varchar
   telephone varchar(15)
-  Name varchar
-  Surname varchar
+  name varchar
+  surname varchar
   is_admin boolean [default: false]
   is_diasostis boolean [default: false]
   is_citizen boolean [default: false]
-  tasks integer [ref: < Task_List.id]
   note: 'The table where user information and their role is stored.'
 }
 
 Table Base  [headercolor: #EB801B]
 {
-  admin varchar [ref: - User.username]
+  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  admin binary(16) [ref: - User.id]
   longtitude float
   latitude float 
-  announcements integer [ref: < Announcement_List.id]
-  inventory integer [ref: < Product_List.id]
-
-}
-
-Table Announcement [headercolor: #E4A62E]
-{
-  id integer
-  published_in date
-  needs integer [ref: < Product_List.id]
-  text varchar
 }
 
 Table Announcement_List
 {
-  id integer
-  announcement integer [ref: - Announcement.id]
+  id binary(16) [ref: > Base.id]
+  announcement binary(16) [ref: - Announcement.id]
 }
 
 Table Product_List
 {
-  id integer
+  id binary(16) [ref: > Base.id, ref: > Task.id, ref: > Vehicle.id, ref: > Announcement.id]
   product integer [ref: > Product.id]
   quantity integer
 
 }
 
+Table Task_List
+{
+  id binary(16) [ref: > User.id, ref: > Vehicle.id] 
+  task binary(16) [ref: - Task.id]
+}
+
 Table Product [headercolor: #79AD51]
 {
-  id integer
+  id integer [pk, increment]
   name varchar
-  category integer [ref: - Category.id]
+  category varchar [ref: - Category.name]
 
 }
 
@@ -70,15 +66,21 @@ Table Details [headercolor: #99CD71]
 
 Table Category [headercolor: #2D6512]
 {
-  name varchar
-  id integer
+  name varchar [pk]  
+}
+
+Table Vehicle  [headercolor: #4B82B0]
+{
+  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  username varchar
+  owner binary(16) [ref: - User.id]
+  katastasi varchar
 }
 
 Table Task  [headercolor: #CA4242]
 {
-  id integer [ref: - Task_List.task]
-  citizen varchar [ref: > User.username]
-  list integer [ref: < Product_List.id, note: 'Αν το είδος του Task είναι request, η λίστα μπορεί να περιέχει μόνο ένα είδος προϊόντος.']
+  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  citizen binary(16) [ref: > User.id]
   date_in date
   accepted_in date
   date_out date
@@ -97,18 +99,9 @@ enum task_type {
   offering
 }
 
-
-Table Vehicle  [headercolor: #4B82B0]
+Table Announcement [headercolor: #E4A62E]
 {
-  username varchar
-  owner varchar [ref: - User.username]
-  load integer [ref: - Product_List.id]
-  katastasi varchar
-  tasks integer [ref: < Task_List.id]
-}
-
-Table Task_List
-{
-  id integer 
-  task integer 
+  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  published_in date
+  text varchar
 }
