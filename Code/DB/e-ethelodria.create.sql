@@ -16,6 +16,8 @@ CREATE TABLE `User` (
   `telephone` varchar(15),
   `name` varchar(255),
   `surname` varchar(255),
+  `longitude` float,
+  `latitude` float,
   `is_admin` boolean DEFAULT false,
   `is_diasostis` boolean DEFAULT false,
   `is_citizen` boolean DEFAULT false
