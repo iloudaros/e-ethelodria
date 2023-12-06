@@ -1,7 +1,13 @@
+-- Dropping the existing database if it exists
 DROP DATABASE IF EXISTS `e-ethelodria`;
+
+-- Creating a new database
 CREATE DATABASE `e-ethelodria`;
+
+-- Using the newly created database
 USE `e-ethelodria`;
 
+-- Creating tables
 CREATE TABLE `User` (
   `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
   `username` varchar(255) UNIQUE,
@@ -13,52 +19,40 @@ CREATE TABLE `User` (
   `is_admin` boolean DEFAULT false,
   `is_diasostis` boolean DEFAULT false,
   `is_citizen` boolean DEFAULT false
-);
+) COMMENT = 'The table where user information and their role is stored.';
 
-CREATE TABLE `Base` (
-  `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
-  `admin` binary(16),
-  `longtitude` float,
-  `latitude` float
-);
-
-CREATE TABLE `Announcement_List` (
-  `id` binary(16),
-  `announcement` binary(16)
-);
-
-CREATE TABLE `Product_List` (
-  `id` binary(16),
-  `product` integer,
-  `quantity` integer
-);
-
-CREATE TABLE `Task_List` (
-  `id` binary(16),
-  `task` binary(16)
+CREATE TABLE `Category` (
+  `id` integer PRIMARY KEY,
+  `name` varchar(255) 
 );
 
 CREATE TABLE `Product` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
-  `category` varchar(255)
+  `category` integer,
+  FOREIGN KEY (`category`) REFERENCES `Category` (`id`)
 );
 
-CREATE TABLE `Details` (
-  `product` integer,
-  `name` varchar(255),
-  `value` varchar(255)
+CREATE TABLE `Base` (
+  `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
+  `admin` binary(16),
+  `longitude` float,
+  `latitude` float,
+  FOREIGN KEY (`admin`) REFERENCES `User` (`id`)
 );
 
-CREATE TABLE `Category` (
-  `name` varchar(255) PRIMARY KEY
+CREATE TABLE `Announcement` (
+  `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
+  `published_in` date,
+  `text` varchar(255)
 );
 
 CREATE TABLE `Vehicle` (
   `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
   `username` varchar(255),
   `owner` binary(16),
-  `katastasi` varchar(255)
+  `katastasi` varchar(255),
+  FOREIGN KEY (`owner`) REFERENCES `User` (`id`)
 );
 
 CREATE TABLE `Task` (
@@ -68,43 +62,37 @@ CREATE TABLE `Task` (
   `accepted_in` date,
   `date_out` date,
   `state` ENUM ('published', 'pending', 'done'),
-  `type` ENUM ('request', 'offering')
+  `type` ENUM ('request', 'offering'),
+  FOREIGN KEY (`citizen`) REFERENCES `User` (`id`)
 );
 
-CREATE TABLE `Announcement` (
-  `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
-  `published_in` date,
-  `text` varchar(255)
+CREATE TABLE `Announcement_List` (
+  `id` binary(16),
+  `announcement` binary(16),
+  FOREIGN KEY (`id`) REFERENCES `Base` (`id`),
+  FOREIGN KEY (`announcement`) REFERENCES `Announcement` (`id`)
 );
 
-ALTER TABLE `User` COMMENT = 'The table where user information and their role is stored.';
+CREATE TABLE `Product_List` (
+  `id` binary(16),
+  `product` integer,
+  `quantity` integer,
+  FOREIGN KEY (`id`) REFERENCES `Base` (`id`),
+  FOREIGN KEY (`product`) REFERENCES `Product` (`id`)
+);
 
-ALTER TABLE `Base` ADD FOREIGN KEY (`admin`) REFERENCES `User` (`id`);
+CREATE TABLE `Task_List` (
+  `id` binary(16),
+  `task` binary(16),
+  FOREIGN KEY (`id`) REFERENCES `User` (`id`),
+  FOREIGN KEY (`task`) REFERENCES `Task` (`id`)
+);
 
-ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`id`);
+CREATE TABLE `Details` (
+  `product` integer,
+  `name` varchar(255),
+  `value` varchar(255),
+  FOREIGN KEY (`product`) REFERENCES `Product` (`id`)
+);
 
-ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`announcement`) REFERENCES `Announcement` (`id`);
 
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Task` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Announcement` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
-
-ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
-
-ALTER TABLE `Task_List` ADD FOREIGN KEY (`task`) REFERENCES `Task` (`id`);
-
-ALTER TABLE `Product` ADD FOREIGN KEY (`category`) REFERENCES `Category` (`name`);
-
-ALTER TABLE `Details` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
-
-ALTER TABLE `Vehicle` ADD FOREIGN KEY (`owner`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Task` ADD FOREIGN KEY (`citizen`) REFERENCES `User` (`id`);
