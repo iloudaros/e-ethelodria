@@ -704,6 +704,30 @@
         { "detail_name": "", "detail_value": "" },
         { "detail_name": "", "detail_value": "" }
       ]
+    },
+    {
+      "id": "121",
+      "name": "Duct Tape",
+      "category": "23",
+      "details": [{ "detail_name": "", "detail_value": "" }]
+    },
+    {
+      "id": "122",
+      "name": "",
+      "category": "10",
+      "details": [{ "detail_name": "", "detail_value": "" }]
+    },
+    {
+      "id": "123",
+      "name": "\u0391\u03b8\u03bb\u03b7\u03c4\u03b9\u03ba\u03ac",
+      "category": "19",
+      "details": [{ "detail_name": "\u039d\u03bf 46", "detail_value": "" }]
+    },
+    {
+      "id": "124",
+      "name": "\u03a0\u03b1\u03c3\u03b1\u03c4\u03ad\u03bc\u03c0\u03bf\u03c2",
+      "category": "5",
+      "details": [{ "detail_name": "", "detail_value": "" }]
     }
   ],
   "categories": [
