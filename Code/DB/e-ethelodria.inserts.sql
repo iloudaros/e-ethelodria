@@ -5,6 +5,8 @@ VALUES
 (0x3e3ae724978b11eea1ac8c1645f10bcd,'alice_jones', 'secure789', 'alice@example.com', '1234567892', 'Alice', 'Jones', 39.3655, 22.953, false, false, true),
 (0x3e3ae7c8978b11eea1ac8c1645f10bcd,'bob_brown', 'password1234', 'bob@example.com', '1234567893', 'Bob', 'Brown', 39.366, 22.954, false, false, true),
 (0x3e3ae891978b11eea1ac8c1645f10bcd,'emma_green', 'pass4321', 'emma@example.com', '1234567894', 'Emma', 'Green', 39.3645, 22.955, false, false, true);
+(0x3c7da85b979211eea1ac8c1645f10bcd,'admin_user', 'adminpass', 'admin@example.com', '1234567895', 'Admin', 'User', 39.367, 22.951, true, false, true);
+
 
 
 
@@ -16,3 +18,15 @@ VALUES (0x23dccbee979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, 
 (0x23e45896979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-03", "2023-12-04", "2023-12-07", "published", "offering"),
 (0x23e64728979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", "2023-12-10", "published", "offering"),
 (0x23e6f33a979011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "published", "offering");
+
+
+INSERT INTO Announcement (id, published_in, text)
+VALUES
+(0xd02cb4ee979111eeb08490c11b3fede5, '2023-12-01', 'Offering task 1 related announcement.'),
+(0xd02cb7e6979111eeb08490c11b3fede5, '2023-12-01', 'Offering task 2 related announcement.'),
+(0xd02cb8c2979111eeb08490c11b3fede5, '2023-12-01', 'Offering task 3 related announcement.');
+
+
+INSERT INTO Base (admin, longitude, latitude)
+VALUES
+(0x3c7da85b979211eea1ac8c1645f10bcd, 39.366995, 22.950558);
