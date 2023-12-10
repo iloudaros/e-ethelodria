@@ -49,7 +49,7 @@ CREATE TABLE `Task_List` (
 CREATE TABLE `Product` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
-  `category` varchar(255)
+  `category` integer
 );
 
 CREATE TABLE `Details` (
@@ -69,7 +69,7 @@ CREATE TABLE `Vehicle` (
   `owner` binary(16),
   `longtitude` float,
   `latitude` float,
-  `state` ENUM ('loading', 'traveling', 'offloading')
+  `state` ENUM ('loading', 'free', 'offloading')
 );
 
 CREATE TABLE `Task` (
@@ -112,7 +112,7 @@ ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
 
 ALTER TABLE `Task_List` ADD FOREIGN KEY (`task`) REFERENCES `Task` (`id`);
 
-ALTER TABLE `Product` ADD FOREIGN KEY (`category`) REFERENCES `Category` (`name`);
+ALTER TABLE `Product` ADD FOREIGN KEY (`category`) REFERENCES `Category` (`id`);
 
 ALTER TABLE `Details` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
 
