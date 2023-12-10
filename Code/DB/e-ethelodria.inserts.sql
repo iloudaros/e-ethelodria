@@ -8,6 +8,9 @@ VALUES
 (0x3c7da85b979211eea1ac8c1645f10bcd,'admin_user', 'adminpass', 'admin@example.com', '1234567895', 'Admin', 'User', 39.367, 22.951, true, false, true);
 
 
+INSERT INTO Base (admin, longitude, latitude)
+VALUES
+(0x3c7da85b979211eea1ac8c1645f10bcd, 39.366995, 22.950558);
 
 
 INSERT INTO Task (id, citizen, date_in, accepted_in, date_out, state, type) 
@@ -21,6 +24,17 @@ VALUES
 (0x23e6f33a979011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "published", "offering");
 
 
+INSERT INTO Task_List (id, task)
+VALUES  
+(0x3e3ab5b8978b11eea1ac8c1645f10bcd, 0x23dccbee979011eeb08490c11b3fede5),
+(0x3e3ab5b8978b11eea1ac8c1645f10bcd, 0x23df7da8979011eeb08490c11b3fede5),
+(0x3e3ae57a978b11eea1ac8c1645f10bcd, 0x23e0e382979011eeb08490c11b3fede5),
+(0x3e3ae724978b11eea1ac8c1645f10bcd, 0x23e2f28a979011eeb08490c11b3fede5),
+(0x3e3ae7c8978b11eea1ac8c1645f10bcd, 0x23e45896979011eeb08490c11b3fede5),
+(0x3e3ae7c8978b11eea1ac8c1645f10bcd, 0x23e64728979011eeb08490c11b3fede5),
+(0x3e3ae891978b11eea1ac8c1645f10bcd, 0x23e6f33a979011eeb08490c11b3fede5);
+
+
 INSERT INTO Announcement (id, published_in, text)
 VALUES
 (0xd02cb4ee979111eeb08490c11b3fede5, '2023-12-01', 'Offering task 1 related announcement.'),
@@ -28,11 +42,11 @@ VALUES
 (0xd02cb8c2979111eeb08490c11b3fede5, '2023-12-01', 'Offering task 3 related announcement.');
 
 
-INSERT INTO Base (admin, longitude, latitude)
+INSERT INTO Announcement_List (id, announcement)
 VALUES
-(0x3c7da85b979211eea1ac8c1645f10bcd, 39.366995, 22.950558);
-
-
+(0x3c7da85b979211eea1ac8c1645f10bcd, 0xd02cb4ee979111eeb08490c11b3fede5),
+(0x3c7da85b979211eea1ac8c1645f10bcd, 0xd02cb7e6979111eeb08490c11b3fede5),
+(0x3c7da85b979211eea1ac8c1645f10bcd, 0xd02cb8c2979111eeb08490c11b3fede5);
 
 
 INSERT INTO Product_List (id, product, quantity)

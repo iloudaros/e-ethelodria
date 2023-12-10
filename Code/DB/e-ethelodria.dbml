@@ -77,7 +77,9 @@ Table Vehicle  [headercolor: #4B82B0]
   id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
   username varchar
   owner binary(16) [ref: - User.id]
-  katastasi varchar
+  longtitude float
+  latitude float
+  state vehicle_state
 }
 
 Table Task  [headercolor: #CA4242]
@@ -89,6 +91,12 @@ Table Task  [headercolor: #CA4242]
   date_out date
   state task_state
   type task_type
+}
+
+enum vehicle_state {
+  loading
+  traveling 
+  offloading
 }
 
 enum task_state {
