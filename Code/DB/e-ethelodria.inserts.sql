@@ -5,7 +5,9 @@ VALUES
 (0x3e3ae724978b11eea1ac8c1645f10bcd,'alice_jones', 'secure789', 'alice@example.com', '1234567892', 'Alice', 'Jones', 39.3655, 22.953, false, false, true),
 (0x3e3ae7c8978b11eea1ac8c1645f10bcd,'bob_brown', 'password1234', 'bob@example.com', '1234567893', 'Bob', 'Brown', 39.366, 22.954, false, false, true),
 (0x3e3ae891978b11eea1ac8c1645f10bcd,'emma_green', 'pass4321', 'emma@example.com', '1234567894', 'Emma', 'Green', 39.3645, 22.955, false, false, true);
-(0x3c7da85b979211eea1ac8c1645f10bcd,'admin_user', 'adminpass', 'admin@example.com', '1234567895', 'Admin', 'User', 39.367, 22.951, true, false, true);
+(0x3c7da85b979211eea1ac8c1645f10bcd,'admin_user', 'adminpass', 'admin@example.com', '1234567895', 'Admin', 'User', 39.367, 22.951, true, false, false);
+(0x3e3ae891978b11eea1ac8c1645f10bcd,'diasostis', 'diasostis123', 'diasostis@example.com', '1234567894', 'Mitsos', 'Diasostis', 39.3655, 22.950, false, true, false);
+(0x3c7da85b979211eea1ac8c1645f10bcd,'rescuer', 'rescuer123', 'rescuer@example.com', '1234567895', 'Dora', 'Explorer', 39.368, 22.953, false, true, false);
 
 
 INSERT INTO Base (admin, longitude, latitude)
@@ -58,3 +60,4 @@ VALUES
 (0x23e45896979011eeb08490c11b3fede5, 16, 10),
 (0x23e64728979011eeb08490c11b3fede5, 17, 20),
 (0x23e6f33a979011eeb08490c11b3fede5, 20, 30);
+
