@@ -55,7 +55,7 @@ Table Product [headercolor: #79AD51]
 {
   id integer [pk, increment]
   name varchar
-  category varchar [ref: - Category.id]
+  category integer [ref: - Category.id]
 
 }
 
@@ -75,7 +75,6 @@ Table Category [headercolor: #2D6512]
 Table Vehicle  [headercolor: #4B82B0]
 {
   id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  username varchar
   owner binary(16) [ref: - User.id]
   longtitude float
   latitude float

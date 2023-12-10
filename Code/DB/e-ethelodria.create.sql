@@ -65,7 +65,6 @@ CREATE TABLE `Category` (
 
 CREATE TABLE `Vehicle` (
   `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
-  `username` varchar(255),
   `owner` binary(16),
   `longtitude` float,
   `latitude` float,
