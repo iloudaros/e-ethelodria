@@ -15,6 +15,8 @@ Table User [headercolor: #24BAB1]
   telephone varchar(15)
   name varchar
   surname varchar
+  longtitude float
+  latitude float
   is_admin boolean [default: false]
   is_diasostis boolean [default: false]
   is_citizen boolean [default: false]
@@ -66,7 +68,8 @@ Table Details [headercolor: #99CD71]
 
 Table Category [headercolor: #2D6512]
 {
-  name varchar [pk]  
+  id integer [pk]
+  name varchar   
 }
 
 Table Vehicle  [headercolor: #4B82B0]
@@ -80,7 +83,7 @@ Table Vehicle  [headercolor: #4B82B0]
 Table Task  [headercolor: #CA4242]
 {
   id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  citizen binary(16) [ref: > User.id]
+  user_id binary(16) [ref: > User.id]
   date_in date
   accepted_in date
   date_out date
