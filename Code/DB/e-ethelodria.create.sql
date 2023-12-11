@@ -95,19 +95,7 @@ ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`id`);
 
 ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`announcement`) REFERENCES `Announcement` (`id`);
 
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Base` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Task` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
-
-ALTER TABLE `Product_List` ADD FOREIGN KEY (`id`) REFERENCES `Announcement` (`id`);
-
 ALTER TABLE `Product_List` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
-
-ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
 
 ALTER TABLE `Task_List` ADD FOREIGN KEY (`task`) REFERENCES `Task` (`id`);
 
