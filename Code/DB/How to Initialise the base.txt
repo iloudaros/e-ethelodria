@@ -1,0 +1,15 @@
+To initialise the DB you have to run the sql code in this directory in the following order:
+
+1. e-ethelodria.create.sql
+2. e-ethelodria.triggers.sql
+3. run the script to insert the products
+4. e-ethelodria.inserts.sql
+
+Make sure there are no foreign key constraints on Task_List.id and Product_List.id columns in e-ethelodria.create.sql !
+
+
+
+
+
+
+TODO : For your convenience a makefile has been introduced to automate the process, but you have to set it up for your local configuration.

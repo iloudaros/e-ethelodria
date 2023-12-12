@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const util = require("util");
-const data = require("../../data.json"); // The file where your JSON data is stored
+const data = require("./data.json"); // The file where your JSON data is stored
 const dbConfig = require("../../config.json").database;
 
 // Create a connection to the database
