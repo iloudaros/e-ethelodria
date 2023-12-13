@@ -106,6 +106,21 @@ app.get('/logout', (request, response) => {
     console.log('After session destruction');
 });
 
+app.get('/getdata', (request, response) => {
+   // MySQL query for inventory list
+   const query = 'SELECT pl.id AS product_list_id, p.id AS product_id, p.name AS product_name, c.id AS category_id, c.name AS category_name, pl.quantity FROM Product_List pl JOIN Product p ON pl.product = p.id JOIN Category c ON p.category = c.id;';
+   console.log('Query done');
+   db.query(query, (err, results) => {
+      if (err) {
+         console.error('Error executing MySQL query:', err);
+         response.status(500).json({ message: 'Internal Server Error' });
+         return;
+      }
+      response.json(results);
+   });
+   console.log('Process done');
+});
+
 app.listen(3000, () => {
    console.log("Server started on port 3000");
 });
