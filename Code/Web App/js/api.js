@@ -57,14 +57,14 @@ app.post('/auth', function(request, response) {
             request.session.loggedin = true;
             request.session.username = username;
             //Redirect to home page
-            response.redirect('/home');
+            response.json({ success: true, profileUrl: './user_home.html' });
          } else { 
-            response.send('Incorrect Username and/or Password!');
+            response.json({ message: 'Incorrect Username and/or Password!'});
          }
          response.end();
    });
    } else {
-      response.send('Please enter Username and Password!');
+      response.json({ message: 'Please enter Username and Password!'});
       response.end();
    }
 });
@@ -72,10 +72,10 @@ app.post('/auth', function(request, response) {
 app.get('/home', function(request,response) {
    //If the user is logged in 
    if (request.session.loggedin) {
-      response.send('Welcome back, ' + request.session.username + '!');
+      response.json({ message: 'Welcome back, ' + request.session.username + '!'});
    } else {
       //Not logged in 
-      response.send('Please login to view the page!');
+      response.status(401).json({ message: 'Please login to view the page!'});
    }
    response.end();
 })

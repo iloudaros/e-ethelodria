@@ -6,12 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://kit.fontawesome.com/c16c85aac4.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="bg-gray-100 h-screen flex items-center justify-center">
       <div class="login">
+        <div id="message-container"></div>
+        <div id="loading-spinner"></div>
         <h1>Login</h1>
         <form action="/auth" method="post">
           <label for="username">
@@ -25,7 +28,7 @@
           <input type="submit" value="Login">
         </form>
       </div>
-  <script src="./user_access.js" defer></script>
+  <script src="./user_access.js"></script>
 
 </body>
 
