@@ -1,3 +1,23 @@
+  //Function for onclick logout
+  function logout() {
+  fetch('/logout', {
+    method: 'GET',
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('loading')
+      window.location.href = '/';
+    })
+    .catch((error) => {
+      console.error('Logout error:', error);
+    });
+}
+
 //Validtion Code For Inputs
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.querySelector("form");
@@ -47,4 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadingSpinner.style.display = "none";
       });
   });
+
+
 });

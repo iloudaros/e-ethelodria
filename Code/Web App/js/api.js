@@ -33,6 +33,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+/*function isAuthenticated(request, response, next) {
+  if (request.session && request.session.user) {
+    return next();
+  } else {
+    response.status(401).json({ message: 'Unauthorized'});
+  }
+}*/
+
 app.get('/', function(request, response) {
    //Render login form
    response.sendFile(path.join(__dirname + '/login.html'));
@@ -80,17 +88,24 @@ app.get('/home', function(request,response) {
    response.end();
 })
 
-
-
-
-
-
-/*app.get('/logout', function(requst, response, next) {
-   request.session.destroy();
-
-   response.redirect("/user_home.html");
+// Handle logout
+app.get('/logout', (request, response) => {
+    console.log('Before session destruction');
+    // Destroy the session to log the user out
+    request.session.destroy((err) => {
+        if (err) {
+            console.error(err);
+            response.status(500).json({ message: 'Internal Server Error'});
+        } else {
+            // Log statement to confirm the session is destroyed
+            console.log('Session destroyed successfully');
+            // Send a success response
+            response.json({ message: 'Logout successful!'});
+        }
+    });
+    console.log('After session destruction');
 });
-*/
+
 app.listen(3000, () => {
    console.log("Server started on port 3000");
 });
