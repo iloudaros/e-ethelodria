@@ -106,7 +106,9 @@ app.get('/logout', (request, response) => {
     console.log('After session destruction');
 });
 
-app.get('/getdata', (request, response) => {
+
+//Handle inventory list
+app.get('/getdata', (request, response, next) => {
    // MySQL query for inventory list
    const query = 'SELECT pl.id AS product_list_id, p.id AS product_id, p.name AS product_name, c.id AS category_id, c.name AS category_name, pl.quantity FROM Product_List pl JOIN Product p ON pl.product = p.id JOIN Category c ON p.category = c.id;';
    console.log('Query done');
@@ -115,10 +117,11 @@ app.get('/getdata', (request, response) => {
          console.error('Error executing MySQL query:', err);
          response.status(500).json({ message: 'Internal Server Error' });
          return;
-      }
+      } else {
       response.json(results);
+      console.log(results);
+      }
    });
-   console.log('Process done');
 });
 
 app.listen(3000, () => {

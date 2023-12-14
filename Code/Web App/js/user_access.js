@@ -19,8 +19,6 @@
 }
 
 function fetchDataAndDisplayTable() {
-   let tableHTML;
-
    fetch('/getdata')
       .then((response) => response.json())
       .then((data) => {
@@ -52,6 +50,77 @@ function fetchDataAndDisplayTable() {
          // loadingSpinner.style.display = "none";
       });
 }
+
+//Table row generation
+ function generateHTMLTable(data) {
+    const headerNames = ['Product ID', 'Product Name', 'Category ID', 'Category Name', 'Quantity'];
+    const columns = Object.keys(data[0]);
+    const filteredColumns = columns.slice(1);
+    let tableHTML = '<table class="table table-hover" id="table-container">';
+    tableHTML += '<tbody>';
+    
+    // Create table headers
+    headerNames.forEach((header, index) => {
+      tableHTML += `<th scope="col">${header}</th>`;
+    });
+
+    tableHTML += '</tr></thead><tbody>';
+
+    // Create table rows
+    data.forEach(rowData => {
+      tableHTML += `<tr>`;
+      filteredColumns.forEach(column => {
+        tableHTML += `<td>${rowData[column]}</td>`;
+      });
+      tableHTML += `</tr>`;
+    });
+
+    tableHTML += `</tbody></table>`;
+
+    return tableHTML;
+  }
+
+  /*//Fill the dropdown with category list
+  function addCategoryDropdown(data) {
+    const categoryFilter = document.getElementById("categoryFilter");
+
+    const categories = [...new Set(data.map(item => item.category_name)];
+
+    categories.forEach(category => {
+      const option = document.createElement("option");
+      option.value = category;
+      option.text = category;
+      categoryFilter.appendChlid(option);
+    });      
+  } 
+  
+  //Functionality of filter button click
+  function handleFilterButtonClick() {
+    const selectedCategories = getSelectedCategories();
+    filterTableByCategory(selectedCategories);
+  } 
+
+  //Get selected categories from dropdown
+  function getSelectedCategories() {
+    const categoryFilter = document.getElementById("categoryFilter");
+    return Array.from(categoryFilter.selectedOptions, option => option.value);
+  }
+
+  //Filtering of table based on category
+  function filterTableByCategory(selectedCategories) {
+    const tableRows = document.querySelectorAll("#table-container tbody tr");
+
+    tableRows.forEach(row => {
+        const categoryCell = row.querySelector("td:nth-child(5)"); // Assuming category is in the 5th column
+        const category = categoryCell.textContent;
+
+        // Show or hide rows based on selected categories
+        row.style.display = selectedCategories.length === 0 || selectedCategories.includes(category) ? "" : "none";
+    });
+  }
+
+  document.getElementById("filterButton").addEventListener("click", handleFilterButtonClick); */
+
 
 //Validtion Code For Inputs
 document.addEventListener("DOMContentLoaded", function () {
@@ -110,3 +179,4 @@ console.log(tableHTML);
    return tableHTML;
 
 });
+
