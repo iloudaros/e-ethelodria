@@ -121,12 +121,117 @@ function fetchDataAndDisplayTable() {
 
   document.getElementById("filterButton").addEventListener("click", handleFilterButtonClick); */
 
+function fetchServiceStatistics() {
+  console.log('Fetching service statistics...');
+  fetch('/serviceStatisticsWithTime')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      createServiceChart(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching service statistics:', error);
+    });
+}
+
+function createServiceChart(data) {
+  const ctx = document.getElementById('serviceChart').getContext('2d');
+
+  const dates = data.newRequests.map(entry => new Date(entry.date));
+  const newRequestCounts = data.newRequests.map(entry => entry.newRequestCount);
+  const processedRequestCounts = data.processedRequests.map(entry => entry.processedRequestCount);
+  const newOfferCounts = data.newOffers.map(entry => entry.newOfferCount);
+  const processedOfferCounts = data.processedOffers.map(entry => entry.processedOfferCount);
+
+  const serviceChart = new Chart(ctx, {
+    type: 'line', // Use line chart for time series
+    data: {
+      labels: dates,
+      datasets: [
+        {
+          label: 'New Requests',
+          data: newRequestCounts,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          fill: false,
+        },
+        {
+          label: 'Processed Requests',
+          data: processedRequestCounts,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          fill: false,
+        },
+        {
+          label: 'New Offers',
+          data: newOfferCounts,
+          borderColor: 'rgba(255, 206, 86, 1)',
+          fill: false,
+        },
+        {
+          label: 'Processed Offers',
+          data: processedOfferCounts,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          type: 'time', // Specify time scale for x-axis
+          time: {
+            unit: 'day', // Adjust the time unit as needed (day, week, month, etc.)
+            tooltipFormat: 'll', // Format for tooltips
+          },
+          title: {
+            display: true,
+            text: 'Date',
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            min: 0,
+          },
+          title: {
+            display: true,
+            text: 'Count',
+          },
+        },
+      },
+    },
+  });
+}
+
+/*const dateRangeSlider = document.getElementById('dateRangeSlider');
+dateRangeSlider.addEventListener('input', handleDateRangeChange);
+
+//Function to handle slider value change
+function handleDateRangeChange() {
+  const selectedPercentage = dateRangeSlider.value;
+  
+  const startIndex = 0;
+  const endIndex = Math.floor(data.newRequests.length * (selectedPercentage / 100));
+
+  //Filter your data based on the calculated indices
+  const filteredData = {
+    newRequests: data.newRequests.slice(startIndex, endIndex),
+    processedRequests: data.processedRequests.slice(startIndex, endIndex),
+    newOffers: data.newOffers.slice(startIndex, endIndex),
+    processedOffers: data.processedOffers.slice(startIndex, endIndex),
+  };
+
+  //Update your chart or other UI elements with the filtered data
+  createServiceChart(filteredData.newRequestCount, filteredData.processedRequestCount, filteredData.newOfferCount, filteredData.processedOfferCount);
+}
+*/
 
 //Validtion Code For Inputs
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.querySelector("form");
   const loadingSpinner = document.getElementById("loading-spinner");
   const messageContainer = document.getElementById("message-container");
+  const vRegistrationForm = document.getElementById("vRegistrationForm");
 
   loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -172,7 +277,46 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+/*vRegistrationForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value;
+  const telephone = document.getElementById("telephone").value;
+  const name = document.getElementById("name").value;
+  const surname = document.getElementById("surname").value;
+
+  if (!username || !password || !email || !telephone || !name || !surname) {
+    alert("Please fill in all the required fields.");
+    return;
+  }
+
+  //AJAX request for registration 
+  fetch("v_register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password, email, telephone, name, surname}),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if(data.success) {
+        alert(data.message);
+        window.location.href = '/v_account.html';
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Registration Error:', error);
+      alert('An error occured during registration. Please try again.');
+    });
+}); */
+
 fetchDataAndDisplayTable();
+fetchServiceStatistics();
 
 console.log(tableHTML);
 
