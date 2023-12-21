@@ -1,17 +1,34 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Default coordinates for Patras, Greece
-    const patrasCoordinates = [38.2466, 21.7346];
+$(document).ready(function () {
+    var map = L.map('map').setView([39.3622, 22.9424], 13); // Default location: Volos, Greece
 
-    // Initialize the map
-    const map = L.map('map').setView(patrasCoordinates, 13);
-
-    // Add OpenStreetMap tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Add a marker at the default location
-    L.marker(patrasCoordinates).addTo(map)
-        .bindPopup('Welcome to Patras, Greece!')
-        .openPopup();
+    L.control.locate({
+        strings: {
+          title: "Show me where I am, yo!"
+        }
+      })
+      .addTo(map);
+
+    // Fetch markers' coordinates from the server
+    $.ajax({
+        url: 'php/get_markers.php',
+        method: 'GET',
+        dataType: 'json',
+        success: addMarkers(data),
+        error: console.error('Error fetching markers:', error);
+        });
+
+
+
+    function addMarkers(markers) {
+        markers.forEach(function (marker) {
+            L.marker([marker.lat, marker.lng]).addTo(map)
+                .bindPopup(marker.name);
+        });
+    }
+
+
 });

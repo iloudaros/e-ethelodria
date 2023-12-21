@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-ethelodria</title>
+
+    <!-- Included Styles  -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <style>
-        body { margin: 0; }
-        #map { height: 100vh; }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <!-- Our Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
     <header>
@@ -18,7 +21,14 @@
 
     <div id="map"></div>
 
+
+
+
+    <!-- Included Scripts -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Our Scripts -->
     <script src="js/map.js"></script>
 </body>
 </html>
