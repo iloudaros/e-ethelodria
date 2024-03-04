@@ -1,3 +1,4 @@
 *.DS_Store
 config.json
 Code/DB/Makefile
+node_modules/

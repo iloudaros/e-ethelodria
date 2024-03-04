@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
   }
 }
