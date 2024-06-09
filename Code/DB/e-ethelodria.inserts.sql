@@ -89,23 +89,15 @@ VALUES (UUID_TO_BIN(UUID()), 38.24289851714071, 21.727808051916337, 0);
 
 -- USERS
 INSERT INTO users (id, username, password, role, full_name, email, phone, location_id)
-VALUES (UUID_TO_BIN(UUID()), 'admin', 'admin', 'ADMIN', '', 'admin.base0@system.gov', '', (SELECT id FROM location));
-
--- ADDITIONAL EXAMPLE USERS
-INSERT INTO users (id, username, password, role, full_name, email, phone, location_id)
 VALUES 
+(UUID_TO_BIN(UUID()), 'admin', 'admin', 'ADMIN', '', 'admin.base0@system.gov', '', (SELECT id FROM location));
 (UUID_TO_BIN(UUID()), 'john_doe', 'pass123', 'CITIZEN', 'John Doe', 'john@example.com', '1234567890', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'jane_smith', 'password456', 'CITIZEN', 'Jane Smith', 'jane@example.com', '1234567891', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'alice_jones', 'secure789', 'CITIZEN', 'Alice Jones', 'alice@example.com', '1234567892', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'bob_brown', 'password1234', 'CITIZEN', 'Bob Brown', 'bob@example.com', '1234567893', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'emma_green', 'pass4321', 'CITIZEN', 'Emma Green', 'emma@example.com', '1234567894', (SELECT id FROM location)),
-(UUID_TO_BIN(UUID()), 'admin_user', 'adminpass', 'ADMIN', 'Admin User', 'admin@example.com', '1234567895', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'diasostis', 'diasostis123', 'RESCUER', 'Mitsos Diasostis', 'diasostis@example.com', '1234567894', (SELECT id FROM location)),
 (UUID_TO_BIN(UUID()), 'rescuer', 'rescuer123', 'RESCUER', 'Dora Explorer', 'rescuer@example.com', '1234567895', (SELECT id FROM location));
-
--- BASE LOCATION
-INSERT INTO location (id, latitude, longitude, distance_to_base) 
-VALUES (UUID_TO_BIN(UUID()), 39.366995, 22.950558, 0);
 
 -- TASKS
 INSERT INTO request (id, citizen_id, product_id, number_of_people, quantity, status, created_at)
