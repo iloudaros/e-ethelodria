@@ -1,117 +1,157 @@
-Project "e-ethelodria" {
-  database_type: 'MySQL'
-  Note: '''
-    # e-ethelodria
-    ## A Crowd Sourcing Humanitarian Aid Web App.
-  '''
+
+Enum "users_role_enum" {
+  "ADMIN"
+  "RESCUER"
+  "CITIZEN"
 }
 
-Table User [headercolor: #24BAB1]
-{
-  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  username varchar [unique]
-  password varchar
-  email varchar
-  telephone varchar(15)
-  name varchar
-  surname varchar
-  longtitude float
-  latitude float
-  is_admin boolean [default: false]
-  is_diasostis boolean [default: false]
-  is_citizen boolean [default: false]
-  note: 'The table where user information and their role is stored.'
+Enum "request_status_enum" {
+  "PENDING"
+  "ASSUMED"
+  "COMPLETED"
 }
 
-Table Base  [headercolor: #EB801B]
-{
-  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  admin binary(16) [ref: - User.id]
-  longtitude float
-  latitude float 
+Enum "offer_status_enum" {
+  "PENDING"
+  "ASSUMED"
+  "COMPLETED"
 }
 
-Table Announcement_List
-{
-  id binary(16) [ref: > Base.id]
-  announcement binary(16) [ref: - Announcement.id]
+Enum "rescue_vehicle_type_enum" {
+  "PERSONAL USE"
+  "VAN"
+  "PICKUP TRUCK"
 }
 
-Table Product_List
-{
-  id binary(16) [ref: > Base.id, ref: > Task.id, ref: > Vehicle.id, ref: > Announcement.id]
-  product integer [ref: > Product.id]
-  quantity integer
-
+Enum "rescue_vehicle_status_enum" {
+  "WAITING"
+  "ACTIVE"
+  "UNAVAILABLE"
 }
 
-Table Task_List
-{
-  id binary(16) [ref: > User.id, ref: > Vehicle.id] 
-  task binary(16) [ref: - Task.id]
+Table "location" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "latitude" DOUBLE
+  "longitude" DOUBLE
+  "distance_to_base" DOUBLE
 }
 
-Table Product [headercolor: #79AD51]
-{
-  id integer [pk, increment]
-  name varchar
-  category integer [ref: - Category.id]
-
+Table "users" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "username" VARCHAR(255) [not null]
+  "password" VARCHAR(255) [not null]
+  "role" users_role_enum [not null]
+  "full_name" VARCHAR(255)
+  "email" VARCHAR(255) [not null]
+  "phone" VARCHAR(20) [not null]
+  "location_id" BINARY(16)
 }
 
-Table Details [headercolor: #99CD71]
-{
-  product integer [ref: > Product.id]
-  name varchar
-  value varchar
+Table "product_category" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "name" VARCHAR(255) [unique, not null]
 }
 
-Table Category [headercolor: #2D6512]
-{
-  id integer [pk]
-  name varchar   
+Table "product" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "name" VARCHAR(255) [not null]
+  "description" TEXT
+  "quantity" INT [not null, default: 0]
+  "offer_quantity" INT [not null, default: 2]
+  "category_id" BINARY(16) [not null]
 }
 
-Table Vehicle  [headercolor: #4B82B0]
-{
-  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  owner binary(16) [ref: - User.id]
-  longtitude float
-  latitude float
-  state vehicle_state
+Table "product_details" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "name" VARCHAR(255) [not null]
+  "value" VARCHAR(255) [not null]
+  "product_id" BINARY(16)
 }
 
-Table Task  [headercolor: #CA4242]
-{
-  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  user_id binary(16) [ref: > User.id]
-  date_in date
-  accepted_in date
-  date_out date
-  state task_state
-  type task_type
+Table "request" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "citizen_id" BINARY(16)
+  "rescuer_id" BINARY(16)
+  "product_id" BINARY(16)
+  "number_of_people" INT [not null]
+  "quantity" INT
+  "status" request_status_enum [default: "PENDING"]
+  "created_at" DATETIME [default: `CURRENT_TIMESTAMP`]
+  "assumed_at" DATETIME
+  "completed_at" DATETIME
 }
 
-enum vehicle_state {
-  loading
-  free 
-  offloading
+Table "announcement" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "name" VARCHAR(255) [not null]
+  "description" TEXT
+  "announcement_date" DATETIME [default: `CURRENT_TIMESTAMP`]
 }
 
-enum task_state {
-  published 
-  pending 
-  done
+Table "announcements_needs" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "announcement_id" BINARY(16) [not null]
+  "product_id" BINARY(16) [not null]
 }
 
-enum task_type {
-  request
-  offering
+Table "offer" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "citizen_id" BINARY(16)
+  "rescuer_id" BINARY(16)
+  "product_id" BINARY(16)
+  "announcement_id" BINARY(16)
+  "quantity" INT
+  "status" offer_status_enum [default: "PENDING"]
+  "created_at" DATETIME [default: `CURRENT_TIMESTAMP`]
+  "assumed_at" DATETIME
+  "completed_at" DATETIME
 }
 
-Table Announcement [headercolor: #E4A62E]
-{
-  id binary(16) [pk, default: `UUID_TO_BIN(UUID())`]
-  published_in date
-  text varchar
+Table "rescue_vehicle" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "type" rescue_vehicle_type_enum [not null]
+  "status" rescue_vehicle_status_enum [default: "WAITING"]
+  "active_tasks" INT [default: 0]
+  "rescuer_id" BINARY(16)
 }
+
+Table "rescuer_inventory" {
+  "id" BINARY(16) [pk, default: `UUID_TO_BIN(UUID())`]
+  "rescuer_id" BINARY(16) [not null]
+  "product_id" BINARY(16) [not null]
+  "amount" INT [default: 0]
+
+  Indexes {
+    (rescuer_id, product_id) [unique, name: "idx_rescuer_product"]
+  }
+}
+
+Ref:"location"."id" < "users"."location_id"
+
+Ref:"product_category"."id" < "product"."category_id"
+
+Ref:"product"."id" < "product_details"."product_id"
+
+Ref:"users"."id" < "request"."citizen_id"
+
+Ref:"product"."id" < "request"."product_id"
+
+Ref:"users"."id" < "request"."rescuer_id"
+
+Ref:"announcement"."id" < "announcements_needs"."announcement_id"
+
+Ref:"product"."id" < "announcements_needs"."product_id"
+
+Ref:"users"."id" < "offer"."citizen_id"
+
+Ref:"product"."id" < "offer"."product_id"
+
+Ref:"users"."id" < "offer"."rescuer_id"
+
+Ref:"announcement"."id" < "offer"."announcement_id"
+
+Ref:"users"."id" < "rescue_vehicle"."rescuer_id"
+
+Ref:"users"."id" < "rescuer_inventory"."rescuer_id"
+
+Ref:"product"."id" < "rescuer_inventory"."product_id"

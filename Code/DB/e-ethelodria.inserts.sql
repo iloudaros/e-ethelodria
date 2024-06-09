@@ -1,76 +1,145 @@
-use e-ethelodria;
+-- CATEGORIES
+INSERT INTO product_category (id, name) VALUES (UUID_TO_BIN(UUID()), 'Dairy');
+INSERT INTO product_category (id, name) VALUES (UUID_TO_BIN(UUID()), 'Fruits');
+INSERT INTO product_category (id, name) VALUES (UUID_TO_BIN(UUID()), 'Bakery');
 
+-- PRODUCTS
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Milk', 'Fresh cow milk', 100, 10, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Cheddar Cheese', 'Aged cheddar cheese', 50, 5, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Butter', 'Unsalted butter', 80, 8, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Yogurt', 'Greek yogurt', 120, 12, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Cottage Cheese', 'Low-fat cottage cheese', 60, 6, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Sour Cream', 'Natural sour cream', 40, 4, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Ice Cream', 'Vanilla ice cream', 70, 7, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Whipping Cream', 'Heavy whipping cream', 30, 3, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Parmesan', 'Grated Parmesan cheese', 55, 5, (SELECT id FROM product_category WHERE name='Dairy'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Gouda', 'Smoked Gouda cheese', 45, 4, (SELECT id FROM product_category WHERE name='Dairy'));
 
-INSERT INTO User (id, username, password, email, telephone, name, surname, longtitude, latitude, is_admin, is_diasostis, is_citizen)
-VALUES
-(0x3e3ab5b8978b11eea1ac8c1645f10bcd,'john_doe', 'pass123', 'john@example.com', '1234567890', 'John', 'Doe', 39.367, 22.951, false, false, true),
-(0x3e3ae57a978b11eea1ac8c1645f10bcd,'jane_smith', 'password456', 'jane@example.com', '1234567891', 'Jane', 'Smith', 39.368, 22.952, false, false, true),
-(0x3e3ae724978b11eea1ac8c1645f10bcd,'alice_jones', 'secure789', 'alice@example.com', '1234567892', 'Alice', 'Jones', 39.3655, 22.953, false, false, true),
-(0x3e3ae7c8978b11eea1ac8c1645f10bcd,'bob_brown', 'password1234', 'bob@example.com', '1234567893', 'Bob', 'Brown', 39.366, 22.954, false, false, true),
-(0x3e3ae891978b11eea1ac8c1645f10bcd,'emma_green', 'pass4321', 'emma@example.com', '1234567894', 'Emma', 'Green', 39.3645, 22.955, false, false, true),
-(0x3c7da85b979211eea1ac8c1645f10bcd,'admin_user', 'adminpass', 'admin@example.com', '1234567895', 'Admin', 'User', 39.367, 22.951, true, false, false),
-(0x3e3ae892378b11eea1ac8c1645f10bcd,'diasostis', 'diasostis123', 'diasostis@example.com', '1234567894', 'Mitsos', 'Diasostis', 39.3655, 22.950, false, true, false),
-(0x3c7da85b974511eea1ac8c1645f10bcd,'rescuer', 'rescuer123', 'rescuer@example.com', '1234567895', 'Dora', 'Explorer', 39.368, 22.953, false, true, false);
+-- Fruit products
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Apple', 'Red delicious apples', 200, 20, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Banana', 'Fresh ripe bananas', 150, 15, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Orange', 'Juicy oranges', 180, 18, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Pear', 'Green pears', 160, 16, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Grapes', 'Seedless grapes', 140, 14, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Blueberries', 'Fresh blueberries', 120, 12, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Strawberries', 'Organic strawberries', 130, 13, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Pineapple', 'Tropical pineapple', 110, 11, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Mango', 'Ripe mangoes', 100, 10, (SELECT id FROM product_category WHERE name='Fruits'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Cherries', 'Sweet cherries', 90, 9, (SELECT id FROM product_category WHERE name='Fruits'));
 
-INSERT INTO Base (id, admin, longtitude, latitude)
-VALUES
-(0x4c7da85b979211eea1ac8c1645f10bcd, 0x3c7da85b979211eea1ac8c1645f10bcd, 39.366995, 22.950558);
+-- Bakery products
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Bread', 'Whole grain bread loaf', 80, 8, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Croissant', 'Buttery croissants', 60, 6, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Bagel', 'Plain bagels', 70, 7, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Muffin', 'Blueberry muffins', 50, 5, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Cake', 'Chocolate cake', 40, 4, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Donut', 'Glazed donuts', 90, 9, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Scone', 'Cheese scones', 75, 7, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Tart', 'Lemon tarts', 65, 6, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Pie', 'Apple pie', 55, 5, (SELECT id FROM product_category WHERE name='Bakery'));
+INSERT INTO product (id, name, description, quantity, offer_quantity, category_id)
+VALUES (UUID_TO_BIN(UUID()), 'Brownie', 'Fudge brownies', 85, 8, (SELECT id FROM product_category WHERE name='Bakery'));
 
+-- PRODUCT DETAILS
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Fat Content', '3.5%', (SELECT id FROM product WHERE name='Milk'));
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Package', '1L Carton', (SELECT id FROM product WHERE name='Milk'));
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Type', 'Red Delicious', (SELECT id FROM product WHERE name='Apple'));
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Organic', 'Yes', (SELECT id FROM product WHERE name='Apple'));
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Weight', '500g', (SELECT id FROM product WHERE name='Bread'));
+INSERT INTO product_details (id, name, value, product_id) 
+VALUES (UUID_TO_BIN(UUID()), 'Grain', 'Whole Wheat', (SELECT id FROM product WHERE name='Bread'));
 
-INSERT INTO Task (id, user_id, date_in, accepted_in, date_out, state, type) 
+-- LOCATION
+INSERT INTO location (id, latitude, longitude, distance_to_base) 
+VALUES (UUID_TO_BIN(UUID()), 38.24289851714071, 21.727808051916337, 0);
+
+-- USERS
+INSERT INTO users (id, username, password, role, full_name, email, phone, location_id)
+VALUES (UUID_TO_BIN(UUID()), 'admin', 'admin', 'ADMIN', '', 'admin.base0@system.gov', '', (SELECT id FROM location));
+
+-- ADDITIONAL EXAMPLE USERS
+INSERT INTO users (id, username, password, role, full_name, email, phone, location_id)
 VALUES 
-(0x23dccbee979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-01", "2023-12-02", "2023-12-05", "published", "request"),
-(0x23df7da8979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-03", "2023-12-04", "2023-12-07", "published", "request"),
-(0x23e0e382979011eeb08490c11b3fede5, 0x3e3ae57a978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", "2023-12-10", "published", "request"),
-(0x23e2f28a979011eeb08490c11b3fede5, 0x3e3ae724978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "published", "request"),
-(0x23e45896979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-03", "2023-12-04", "2023-12-07", "published", "offering"),
-(0x23e64728979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", "2023-12-10", "published", "offering"),
-(0x23e6f33a979011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "published", "offering");
+(UUID_TO_BIN(UUID()), 'john_doe', 'pass123', 'CITIZEN', 'John Doe', 'john@example.com', '1234567890', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'jane_smith', 'password456', 'CITIZEN', 'Jane Smith', 'jane@example.com', '1234567891', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'alice_jones', 'secure789', 'CITIZEN', 'Alice Jones', 'alice@example.com', '1234567892', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'bob_brown', 'password1234', 'CITIZEN', 'Bob Brown', 'bob@example.com', '1234567893', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'emma_green', 'pass4321', 'CITIZEN', 'Emma Green', 'emma@example.com', '1234567894', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'admin_user', 'adminpass', 'ADMIN', 'Admin User', 'admin@example.com', '1234567895', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'diasostis', 'diasostis123', 'RESCUER', 'Mitsos Diasostis', 'diasostis@example.com', '1234567894', (SELECT id FROM location)),
+(UUID_TO_BIN(UUID()), 'rescuer', 'rescuer123', 'RESCUER', 'Dora Explorer', 'rescuer@example.com', '1234567895', (SELECT id FROM location));
 
-INSERT INTO Vehicle (id, owner, longtitude, latitude, state)
-VALUES
-(0x3e4ae891978b11eea1ac8c1645f10bcd, 0x3e3ae892378b11eea1ac8c1645f10bcd, 39.366995, 22.950558, "free"),
-(0x3e4ae89197ab11eea1ac8c1645f10bcd, 0x3c7da85b974511eea1ac8c1645f10bcd, 39.366995, 22.950558, "free");
+-- BASE LOCATION
+INSERT INTO location (id, latitude, longitude, distance_to_base) 
+VALUES (UUID_TO_BIN(UUID()), 39.366995, 22.950558, 0);
 
+-- TASKS
+INSERT INTO request (id, citizen_id, product_id, number_of_people, quantity, status, created_at)
+VALUES 
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='john_doe'), (SELECT id FROM product WHERE name='Milk'), 10, 100, 'PENDING', '2023-12-01'),
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='jane_smith'), (SELECT id FROM product WHERE name='Butter'), 5, 40, 'PENDING', '2023-12-03'),
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='alice_jones'), (SELECT id FROM product WHERE name='Bread'), 7, 50, 'PENDING', '2023-12-05');
 
-INSERT INTO Task_List (id, task)
-VALUES  
-(0x3e3ab5b8978b11eea1ac8c1645f10bcd, 0x23dccbee979011eeb08490c11b3fede5),
-(0x3e3ab5b8978b11eea1ac8c1645f10bcd, 0x23df7da8979011eeb08490c11b3fede5),
-(0x3e3ae57a978b11eea1ac8c1645f10bcd, 0x23e0e382979011eeb08490c11b3fede5),
-(0x3e3ae724978b11eea1ac8c1645f10bcd, 0x23e2f28a979011eeb08490c11b3fede5),
-(0x3e3ae7c8978b11eea1ac8c1645f10bcd, 0x23e45896979011eeb08490c11b3fede5),
-(0x3e3ae7c8978b11eea1ac8c1645f10bcd, 0x23e64728979011eeb08490c11b3fede5),
-(0x3e3ae891978b11eea1ac8c1645f10bcd, 0x23e6f33a979011eeb08490c11b3fede5);
+-- OFFERS
+INSERT INTO offer (id, citizen_id, product_id, quantity, status, created_at)
+VALUES 
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='bob_brown'), (SELECT id FROM product WHERE name='Cheddar Cheese'), 20, 'PENDING', '2023-12-03'),
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='emma_green'), (SELECT id FROM product WHERE name='Yogurt'), 10, 'PENDING', '2023-12-05');
 
+-- RESCUE VEHICLES
+INSERT INTO rescue_vehicle (id, type, status, active_tasks, rescuer_id)
+VALUES 
+(UUID_TO_BIN(UUID()), 'VAN', 'WAITING', 0, (SELECT id FROM users WHERE username='diasostis')),
+(UUID_TO_BIN(UUID()), 'PICKUP TRUCK', 'WAITING', 0, (SELECT id FROM users WHERE username='rescuer'));
 
-INSERT INTO Announcement (id, published_in, text)
-VALUES
-(0xd02cb4ee979111eeb08490c11b3fede5, '2023-12-01', 'Request task 1 related announcement.'),
-(0xd02cb7e6979111eeb08490c11b3fede5, '2023-12-01', 'Request task 2 related announcement.'),
-(0xd02cb8c2979111eeb08490c11b3fede5, '2023-12-01', 'Request task 3,4 related announcement.');
+-- ANNOUNCEMENTS
+INSERT INTO announcement (id, name, description, announcement_date)
+VALUES 
+(UUID_TO_BIN(UUID()), 'Urgent Need for Water', 'We need immediate supplies of water for affected areas', '2023-12-01'),
+(UUID_TO_BIN(UUID()), 'Food Supplies Needed', 'Please donate any non-perishable food items', '2023-12-02');
 
+-- ANNOUNCEMENTS NEEDS
+INSERT INTO announcements_needs (id, announcement_id, product_id)
+VALUES 
+(UUID_TO_BIN(UUID()), (SELECT id FROM announcement WHERE name='Urgent Need for Water'), (SELECT id FROM product WHERE name='Milk')),
+(UUID_TO_BIN(UUID()), (SELECT id FROM announcement WHERE name='Food Supplies Needed'), (SELECT id FROM product WHERE name='Bread'));
 
-INSERT INTO Announcement_List (id, announcement)
-VALUES
-(0x4c7da85b979211eea1ac8c1645f10bcd, 0xd02cb4ee979111eeb08490c11b3fede5),
-(0x4c7da85b979211eea1ac8c1645f10bcd, 0xd02cb7e6979111eeb08490c11b3fede5),
-(0x4c7da85b979211eea1ac8c1645f10bcd, 0xd02cb8c2979111eeb08490c11b3fede5);
-
-
-INSERT INTO Product_List (id, product, quantity)
-VALUES
--- Tasks:Requests
-(0x23dccbee979011eeb08490c11b3fede5, 16, 10),
-(0x23df7da8979011eeb08490c11b3fede5, 17, 20),
-(0x23e0e382979011eeb08490c11b3fede5, 20, 30),
-(0x23e2f28a979011eeb08490c11b3fede5, 21, 40),
--- Tasks:Offerings
-(0x23e45896979011eeb08490c11b3fede5, 16, 10),
-(0x23e64728979011eeb08490c11b3fede5, 17, 20),
-(0x23e6f33a979011eeb08490c11b3fede5, 20, 30),
--- Announcements
-(0xd02cb4ee979111eeb08490c11b3fede5, 16, 10),
-(0xd02cb7e6979111eeb08490c11b3fede5, 17, 20),
-(0xd02cb8c2979111eeb08490c11b3fede5, 20, 30),
-(0xd02cb8c2979111eeb08490c11b3fede5, 21, 40);
+-- RESCUER INVENTORY
+INSERT INTO rescuer_inventory (id, rescuer_id, product_id, amount)
+VALUES 
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='diasostis'), (SELECT id FROM product WHERE name='Butter'), 5),
+(UUID_TO_BIN(UUID()), (SELECT id FROM users WHERE username='rescuer'), (SELECT id FROM product WHERE name='Milk'), 10);
