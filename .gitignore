@@ -3,3 +3,4 @@ config.json
 Code/DB/Makefile
 */node_modules/*
 */.env
+Code/Web App/backend/node_modules
