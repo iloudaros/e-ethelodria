@@ -2,7 +2,7 @@
 BACKEND_DIR := App/backend
 FRONTEND_DIR := App/frontend
 
-include $(BACKEND_DIR)/config/.env
+include $(BACKEND_DIR)/.env
 
 
 .PHONY: create_DB initialise_DB DB start_e-ethelodria stop_e-ethelodria
@@ -16,8 +16,8 @@ create_DB:
 	
 
 initialise_DB:
-	@node ../Data/import-data.js
-	@$(MYSQL) -u $(USER) -p$(PASSWORD) < e-ethelodria.inserts.sql
+	@node Data/import-data.js
+	@$(MYSQL) -u $(USER) -p$(PASSWORD) < DB/e-ethelodria.inserts.sql
 	@echo "✅"
 
 DB: create_DB initialise_DB
@@ -41,16 +41,8 @@ stop_e-ethelodria:
 	@pkill -f "npx nodemon index.js" || true
 	@pkill -f "npm start" || true
 	@echo "Backend and Frontend screen sessions have been stopped."
- 
 
-# Recipe to forcefully kill backend and frontend processes if screen sessions don't stop
-kill_e-ethelodria:
-	@echo "Forcefully killing backend and frontend processes..."
-	@pkill -f "npx nodemon index.js"
-	@pkill -f "npm start"
-	@echo "Backend and Frontend processes have been forcefully killed."
 
 # Tests
-
 test_env_exists:
 	@echo $(DB_NAME)
