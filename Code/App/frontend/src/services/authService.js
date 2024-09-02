@@ -5,10 +5,12 @@ const API_URL = 'http://localhost:3000/api/users/';
 const login = async (username, password) => {
   try {
     const response = await axios.post(API_URL + 'login', { username, password });
-    if (response.user) {
+    console.log('Login response:', response.data); // Προσθήκη για εντοπισμό του προβλήματος
+    if (response.data.message == "Login successful") {
       // Αποθήκευση του αντικειμένου χρήστη στο localStorage
-      console.log('response:', response);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      console.log("The response was successful. The user is:", response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      console.log('LocalStorage:', localStorage.getItem('user'));
     }
     return response.data;
   } catch (error) {

@@ -15,11 +15,12 @@ const MapPage = () => {
   useEffect(() => {
     console.log('useEffect called');
     const storedUser = localStorage.getItem('user');
+    console.log('User:', storedUser);
+
     
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        console.log('User:', parsedUser);
 
         if (parsedUser && parsedUser.latitude && parsedUser.longtitude) {
           setUser(parsedUser);
