@@ -6,7 +6,7 @@ const login = async (username, password) => {
   try {
     const response = await axios.post(API_URL + 'login', { username, password });
     console.log('Login response:', response.data); // Προσθήκη για εντοπισμό του προβλήματος
-    if (response.data.message == "Login successful") {
+    if (response.data.message === "Login successful") {
       // Αποθήκευση του αντικειμένου χρήστη στο localStorage
       console.log("The response was successful. The user is:", response.data.user);
       localStorage.setItem('user', JSON.stringify(response.data.user));

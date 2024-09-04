@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import L from 'leaflet';
+import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
 import 'leaflet.locatecontrol';
 import { useNavigate } from 'react-router-dom';
+import CustomNavbar from '../components/Navbar';
 
 const MapPage = () => {
   console.log('Rendering MapPage');
@@ -15,12 +17,11 @@ const MapPage = () => {
   useEffect(() => {
     console.log('useEffect called');
     const storedUser = localStorage.getItem('user');
-    console.log('User:', storedUser);
-
     
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
+        console.log('User:', parsedUser);
 
         if (parsedUser && parsedUser.latitude && parsedUser.longtitude) {
           setUser(parsedUser);
@@ -42,7 +43,7 @@ const MapPage = () => {
     const map = useMap();
 
     useEffect(() => {
-      console.log('MapWithLocateControl useEffect called'); // Προσθήκη για εντοπισμό του προβλήματος
+      console.log('MapWithLocateControl useEffect called');
 
       // Check if locate control already exists
       if (!map._locateControl) {
@@ -55,6 +56,9 @@ const MapPage = () => {
             console.error('Geolocation error:', err.message);
             alert('Geolocation error: ' + err.message);
           },
+          onLocationFound: (e) => {
+            console.log('Location found:', e.latlng);
+          }
         }).addTo(map);
 
         // Store the locate control instance in the map object
@@ -72,17 +76,7 @@ const MapPage = () => {
 
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">e-ethelodria</Navbar.Brand>
-          <Nav className="me-auto">
-            {user.is_admin && <Nav.Link href="#create-account">Δημιουργία accounts</Nav.Link>}
-          </Nav>
-          <Nav>
-            <Nav.Link href="#user">{user.username}</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+      <CustomNavbar user={user} />
       <Container fluid className="p-0">
         <MapContainer center={position} zoom={13} style={{ height: '90vh' }}>
           <TileLayer

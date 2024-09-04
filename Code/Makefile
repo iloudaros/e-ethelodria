@@ -5,7 +5,7 @@ FRONTEND_DIR := App/frontend
 include $(BACKEND_DIR)/.env
 
 
-.PHONY: create_DB initialise_DB DB start_e-ethelodria stop_e-ethelodria
+.PHONY: create_DB initialise_DB DB start_e-ethelodria stop_e-ethelodria 
 
 
 # Database
@@ -22,7 +22,16 @@ initialise_DB:
 
 DB: create_DB initialise_DB
 
-# Server
+# Installation
+install:
+	@echo "Installing backend dependencies..."
+	@cd $(BACKEND_DIR) && npm install
+	@echo "Installing frontend dependencies..."
+	@cd $(FRONTEND_DIR) && npm install --legacy-peer-deps
+	@echo "✅"
+
+
+# Run
 # Recipe to start backend and frontend in separate screen sessions
 start_e-ethelodria:
 	@echo "Starting backend and frontend in separate screen sessions..."
@@ -46,3 +55,11 @@ stop_e-ethelodria:
 # Tests
 test_env_exists:
 	@echo $(DB_NAME)
+
+
+# Clean
+clean:
+	@echo "Cleaning up..."
+	@rm -rf $(BACKEND_DIR)/node_modules
+	@rm -rf $(FRONTEND_DIR)/node_modules
+	@echo "✅"
