@@ -1,6 +1,7 @@
 # Paths
 BACKEND_DIR := App/backend
 FRONTEND_DIR := App/frontend
+MYSQL := mysql
 
 include $(BACKEND_DIR)/.env
 
@@ -10,14 +11,14 @@ include $(BACKEND_DIR)/.env
 
 # Database
 create_DB:
-	@$(MYSQL) -u $(USER) -p$(PASSWORD) < DB/e-ethelodria.create.sql
-	@$(MYSQL) -u $(USER) -p$(PASSWORD) < DB/e-ethelodria.triggers.sql
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < DB/e-ethelodria.create.sql
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < DB/e-ethelodria.triggers.sql
 	@echo "✅"
 	
 
 initialise_DB:
 	@node Data/import-data.js
-	@$(MYSQL) -u $(USER) -p$(PASSWORD) < DB/e-ethelodria.inserts.sql
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < DB/e-ethelodria.inserts.sql
 	@echo "✅"
 
 DB: create_DB initialise_DB
