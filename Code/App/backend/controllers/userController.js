@@ -1,6 +1,7 @@
 const pool = require('../db');
 
 const userController = {
+  // The method to handle user login
   login: async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -28,6 +29,24 @@ const userController = {
       res.status(500).json({ message: 'Server error', error });
     }
   },
+  // The method that lets us save the new location of a user
+  saveLocation: async (req, res) => {
+    const { username, latitude, longitude } = req.body;
+    try {
+      console.log('Received location update request for:', username);
+      const [rows] = await pool.query('SELECT * FROM User WHERE username = ?', [username]);
+      if (rows.length === 0) {
+        console.log('User not found');
+        return res.status(404).json({ message: 'User not found' });
+      }
+      await pool.query('UPDATE User SET latitude = ?, longitude = ? WHERE username = ?', [latitude, longitude, username]);
+      console.log('Location updated');
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+  }
+
 };
 
 module.exports = userController;

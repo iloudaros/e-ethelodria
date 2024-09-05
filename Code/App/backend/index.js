@@ -14,21 +14,19 @@ app.use(cors({
   credentials: true,
 }));
 
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-console.log('DB_NAME:', process.env.DB_NAME);
-console.log('DB_HOST:', process.env.DB_HOST);
 
-console.log('Before middleware');
-
+// Ρύθμιση του bodyParser για την ανάλυση των αιτημάτων JSON
 app.use(bodyParser.json());
 
-console.log('Before routes');
+// Routes
 
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/users στο userRoutes
 app.use('/api/users', userRoutes);
 
-console.log('Starting server');
 
+
+// Εκκίνηση του server
+console.log('Starting server');
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
