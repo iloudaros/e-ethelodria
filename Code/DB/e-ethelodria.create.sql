@@ -16,7 +16,7 @@ CREATE TABLE `User` (
   `telephone` varchar(15),
   `name` varchar(255),
   `surname` varchar(255),
-  `longtitude` float,
+  `longitude` float,
   `latitude` float,
   `is_admin` boolean DEFAULT false,
   `is_diasostis` boolean DEFAULT false,
@@ -26,7 +26,7 @@ CREATE TABLE `User` (
 CREATE TABLE `Base` (
   `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
   `admin` binary(16),
-  `longtitude` float,
+  `longitude` float,
   `latitude` float
 );
 
@@ -66,7 +66,7 @@ CREATE TABLE `Category` (
 CREATE TABLE `Vehicle` (
   `id` binary(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
   `owner` binary(16),
-  `longtitude` float,
+  `longitude` float,
   `latitude` float,
   `state` ENUM ('loading', 'free', 'offloading')
 );
