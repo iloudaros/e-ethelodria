@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Εισαγωγή του cors
 const userRoutes = require('./routes/userRoutes');
+const warehouseRoutes = require('./routes/warehouseRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/users στο userRoutes
 app.use('/api/users', userRoutes);
+app.use('/api/warehouse', warehouseRoutes);
 
 
 
