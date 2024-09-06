@@ -11,11 +11,11 @@ import CustomNavbar from '../components/Navbar';
 const MapPage = () => {
     console.log('Rendering MapPage');
     const navigate = useNavigate();
-    const [position, setPosition] = useState(); 
+    const [position, setPosition] = useState([37.983810, 23.727539]); // Default position (Athens, Greece)
     const [user, setUser] = useState(null);
     
     useEffect(() => {
-        console.log('useEffect called');
+        console.log('Get user location useEffect called');
         const storedUser = localStorage.getItem('user');
         
         if (storedUser) {
@@ -23,9 +23,19 @@ const MapPage = () => {
                 const parsedUser = JSON.parse(storedUser);
                 console.log('User:', parsedUser);
                 
-                if (parsedUser && parsedUser.latitude && parsedUser.longitude) {
+                if (parsedUser) {
                     setUser(parsedUser);
-                    setPosition([parsedUser.latitude, parsedUser.longitude]);
+                    // Ανακτούμε την αποθηκευμένη θέση του χρήστη από το backend
+                    axios.get(`http://localhost:3000/api/users/location/${parsedUser.username}`)
+                    .then((response) => {
+                        console.log('Last User location:', response.data);
+                        
+                        const { latitude, longtitude } = response.data;
+                        setPosition([latitude, longtitude]);
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user location:', error);
+                    });
                 } else {
                     throw new Error('Invalid user data');
                 }
@@ -65,17 +75,16 @@ const MapPage = () => {
                 lc.start();
                 
                 // Update the position state when the user's position changes
-                map.on('locationfound', (e) => {
+                map.on('locationfound', async (e) => {
                     console.log('Location found:', e.latlng);
                     try {
-                        axios.post('http://localhost:3000/api/users/location', {
+                        await axios.post('http://localhost:3000/api/users/location', {
                             username: user.username,
                             latitude: e.latlng.lat,
                             longitude: e.latlng.lng
                         });
                         console.log('Location updated in the database');
-                    }
-                    catch (error) {
+                    } catch (error) {
                         console.error('Error updating location:', error);
                     }
                     setPosition([e.latlng.lat, e.latlng.lng]);
@@ -86,7 +95,7 @@ const MapPage = () => {
         return null;
     };
     
-    if (!user) {
+    if (!user || !position) {
         return <p>Loading...</p>;
     }
     

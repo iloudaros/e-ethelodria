@@ -45,7 +45,26 @@ const userController = {
       console.error('Server error:', error);
       res.status(500).json({ message: 'Server error', error });
     }
-  }
+  },
+
+  // The method that lets us get the location of a user
+  getLocation: async (req, res) => {
+    const { username } = req.params;
+    try {
+      console.log('Received location request for:', username);
+      const [rows] = await pool.query('SELECT latitude, longitude FROM User WHERE username = ?', [username]);
+      if (rows.length === 0) {
+        console.log('User not found');
+        return res.status(404).json({ message: 'User not found' });
+      }
+      const { latitude, longitude } = rows[0];
+      console.log('Location found:', latitude, longitude);
+      res.json({ latitude, longitude });
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+  },
 
 };
 
