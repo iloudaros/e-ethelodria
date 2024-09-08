@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import { Container } from 'react-bootstrap';
-import L from 'leaflet';
-import 'leaflet.locatecontrol';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Container } from 'react-bootstrap';
 import CustomNavbar from '../components/Navbar';
+
+import L from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import 'leaflet.locatecontrol';
+import axios from 'axios';
+
+
+// Ειδικά Εικονίδια για το Leaflet
+import {icons} from '../assets/icons';
+
+console.log('Leaflet icons:', icons.baseIcon);
+
+
 
 const MapPage = () => {
     console.log('Rendering MapPage');
     const navigate = useNavigate();
-    const [position, setPosition] = useState([37.983810, 23.727539]); // Default position (Athens, Greece)
+    const [position, setPosition] = useState(null); // Default position (Athens, Greece)
     const [user, setUser] = useState(null);
+    const [base, setBase] = useState(null);
     
+    
+    // Χρήση useEffect για να ανακτήσουμε το χρήστη από το localStorage
     useEffect(() => {
         console.log('Get user location useEffect called');
         const storedUser = localStorage.getItem('user');
@@ -28,10 +39,23 @@ const MapPage = () => {
                     // Ανακτούμε την αποθηκευμένη θέση του χρήστη από το backend
                     axios.get(`http://localhost:3000/api/users/location/${parsedUser.username}`)
                     .then((response) => {
-                        console.log('Last User location:', response.data);
+                        console.log(`Last User location - lat:${response.data.latitude}, long:${response.data.longitude}`);
                         
-                        const { latitude, longtitude } = response.data;
-                        setPosition([latitude, longtitude]);
+                        const { latitude, longitude } = response.data;
+                        setPosition([latitude, longitude]);
+                        
+                        // Αν ο χρήστης είναι admin, συλλέγουμε επίσης την θέση της αποθηκής
+                        if (parsedUser.is_admin) {
+                            console.log(`User is admin, fetching warehouse location of admin with admin_id:${parsedUser.id}`);
+                            axios.get(`http://localhost:3000/api/warehouse/${parsedUser.id}`)
+                            .then((response) => {
+                                console.log(`Warehouse location - lat:${response.data.latitude}, long:${response.data.longitude}`);
+                                setBase({id: response.data.id, latitude: response.data.latitude, longitude: response.data.longitude});
+                            })
+                        }
+                        
+                        
+                        
                     })
                     .catch((error) => {
                         console.error('Error fetching user location:', error);
@@ -49,6 +73,9 @@ const MapPage = () => {
         }
     }, [navigate]);
     
+    
+    
+    // Χρήση useEffect για την αρχική φόρτωση της θέσης του χρήστη στο χάρτη
     const MapWithLocateControl = () => {
         const map = useMap();
         
@@ -95,7 +122,7 @@ const MapPage = () => {
         return null;
     };
     
-    if (!user || !position) {
+    if (!user || !position || !base) {
         return <p>Loading...</p>;
     }
     
@@ -109,6 +136,13 @@ const MapPage = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWithLocateControl />
+        // Εμφάνιση της θέσης της βάσης
+        <Marker position={[base.latitude, base.longitude]} icon={icons.baseIcon} >
+        <Popup>
+        <h3>Βάση</h3>
+        <p>Τοποθεσία: {base.latitude}, {base.longitude}</p>
+        </Popup>
+        </Marker>
         </MapContainer>
         </Container>
         </>
