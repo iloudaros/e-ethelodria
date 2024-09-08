@@ -6,14 +6,14 @@ const userController = {
     const { username, password } = req.body;
     try {
       console.log('Received login request for:', username);
-      const [rows] = await pool.query('SELECT * FROM User WHERE username = ?', [username]);
+      const [rows] = await pool.query('select hex(id) as id, username, password, email, telephone, name, surname, longitude, latitude, is_admin, is_diasostis, is_citizen  from User where username = ?', [username]);
       if (rows.length === 0) {
         console.log('User not found');
         const [users] = await pool.query('SELECT username FROM User LIMIT 5');
         const usernames = users.map(user => user.username);
         return res.status(404).json({ message: 'User not found', usernames });
       }
-
+      
       const user = rows[0];
       if (password !== user.password) {
         console.log('Invalid password');
@@ -22,7 +22,7 @@ const userController = {
         return res.status(401).json({ message: 'Invalid password', usernames });
       }
 
-      console.log('Login successful');
+      console.log('Login successful', user);
       res.json({ message: 'Login successful', user });
     } catch (error) {
       console.error('Server error:', error);
@@ -46,7 +46,7 @@ const userController = {
       res.status(500).json({ message: 'Server error', error });
     }
   },
-
+  
   // The method that lets us get the location of a user
   getLocation: async (req, res) => {
     const { username } = req.params;
@@ -65,7 +65,7 @@ const userController = {
       res.status(500).json({ message: 'Server error', error });
     }
   },
-
+  
 };
 
 module.exports = userController;
