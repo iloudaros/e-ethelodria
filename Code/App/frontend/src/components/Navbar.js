@@ -19,6 +19,7 @@ const CustomNavbar = ({ user }) => {
             <>
               <Nav.Link href="#create-account">Δημιουργία accounts</Nav.Link>
               <Nav.Link onClick={() => navigate('/warehouse-management')}>Διαχείριση Αποθήκης</Nav.Link>
+              <Nav.Link onClick={() => navigate('/map') }>Χάρτης</Nav.Link>
             </>
           )}
         </Nav>
