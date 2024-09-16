@@ -17,11 +17,22 @@ const CustomNavbar = ({ user }) => {
         <Nav className="me-auto">
           {user && user.is_admin && (
             <>
-              <Nav.Link href="#create-account">Δημιουργία accounts</Nav.Link>
               <Nav.Link onClick={() => navigate('/warehouse-management')}>Διαχείριση Αποθήκης</Nav.Link>
               <Nav.Link onClick={() => navigate('/map') }>Χάρτης</Nav.Link>
+              <Nav.Link href="#create-account">Στατιστικά</Nav.Link>
+              <Nav.Link href="#create-account">Λογαριασμοί Διασωστών</Nav.Link>
+              <Nav.Link href="#create-account">Ανακοινώσεις</Nav.Link>
             </>
           )}
+
+          {user && user.is_diasostiss && (
+            <>
+              <Nav.Link onClick={() => navigate('/map') }>Φορτίο</Nav.Link>
+              <Nav.Link href="#create-account">Χάρτης</Nav.Link>
+              <Nav.Link href="#create-account">Εργασίες</Nav.Link>
+            </>
+          )}
+        
         </Nav>
         <Nav>
           {user && <Nav.Link href="#user">{user.username}</Nav.Link>}

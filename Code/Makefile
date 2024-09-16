@@ -35,7 +35,8 @@ install_dependencies:
 	
 
 # Initialisation
-init: DB install_dependencies
+init: create_DB install_dependencies # Initialise the database and install dependencies
+demo: DB install_dependencies # Initialise the database, install dependencies and insert demo data
 
 
 # Run

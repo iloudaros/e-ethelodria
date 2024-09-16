@@ -1,9 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Εισαγωγή του cors
+require('dotenv').config();
+
+// Route Files
 const userRoutes = require('./routes/userRoutes');
 const warehouseRoutes = require('./routes/warehouseRoutes');
-require('dotenv').config();
+const productRoutes = require('./routes/productRoutes');
+const vehicleRoutes = require('./routes/vehicleRoutes');
+const requestRoutes = require('./routes/requestRoutes');
+const offerRoutes = require('./routes/offerRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +29,21 @@ app.use(bodyParser.json());
 
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/users στο userRoutes
 app.use('/api/users', userRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/warehouse στο warehouseRoutes
 app.use('/api/warehouse', warehouseRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/warehouse στο warehouseRoutes
+app.use('/api/product', productRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/vehicle στο vehicleRoutes
+app.use('/api/vehicle', vehicleRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/requests στο requestRoutes
+app.use('/api/requests', requestRoutes);
+
+// Αναθλετεθ τις αιτήσεις που ξεκινούν με /api/offers στο offerRoutes
+app.use('/api/offers', offerRoutes);
 
 
 

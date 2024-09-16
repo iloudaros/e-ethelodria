@@ -7,13 +7,13 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "mysql2": "^2.3.3"
+    "axios": "",
+    "cors": "",
+    "dotenv": "",
+    "express": "",
+    "mysql2": ""
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": ""
   }
 }

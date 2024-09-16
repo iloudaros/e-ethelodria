@@ -1,10 +1,15 @@
 import L from 'leaflet';
 
-// Ειδικά Εικονίδια για το Leaflet
+// Εικόνα για τα cluster
+import offerClusterIcon from './icon_pngs/offerCluster.png';
+import requestClusterIcon from './icon_pngs/requestCluster.png';
+import multiClusterIcon from './icon_pngs/multiCluster.png';
 
-export const icons ={
+import './icons.css';
+
+export const icons = {
     // Εικόνα για την βάση
-        baseIcon : L.icon({
+    baseIcon : L.icon({
         iconUrl: require('./icon_pngs/base.png'),
         iconSize: [64, 64],
         iconAnchor: [16, 32],
@@ -14,41 +19,69 @@ export const icons ={
     // Εικόνα για τον διασώστη
     rescueIcon : L.icon({
         iconUrl: require('./icon_pngs/rescuer.png'),
-        icon_pngsize: [50, 50],
+        iconSize: [40, 40],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
     }),
     
     // Εικόνα για τα αιτήματα
-        requestIcon : L.icon({
+    requestIcon : L.icon({
         iconUrl: require('./icon_pngs/request.png'),
-        icon_pngsize: [50, 50],
+        iconSize: [50, 50],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
     }),
     
     // Εικόνα για αναληφθέντα αιτήματα
-        requestIcon : L.icon({
+    requestIconOk : L.icon({
         iconUrl: require('./icon_pngs/request_ok.png'),
-        icon_pngsize: [32, 32],
+        iconSize: [40, 40],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
     }),
     
     // Εικόνα για τους εθελοντές
-        volunteerIcon : L.icon({
+    offerIcon : L.icon({
         iconUrl: require('./icon_pngs/volunteer.png'),
-        icon_pngsize: [50, 50],
+        iconSize: [50, 50],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
     }),
     
     // Εικόνα για αναληφθήσα προσφορά
-        offerIcon : L.icon({
+    offerIconOk : L.icon({
         iconUrl: require('./icon_pngs/volunteer_ok.png'),
-        icon_pngsize: [32, 32],
+        iconSize: [40, 40],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
-    })};
+    }),
+    
+    // Εικόνα για cluster αιτημάτων 
+    requestClusterIcon: function (cluster) {
+        console.log('___Creating request cluster icon'); // Log to verify function call
+        return L.divIcon({
+            html: `<img src="${requestClusterIcon}" style="width: 40px; height: 40px;" />`,
+            className: 'custom-cluster-icon',
+            iconSize: L.point(40, 40, true)
+        });
+    },
     
     
+    // Εικόνα για cluster προσφορών
+    offerClusterIcon: function (cluster) {
+        return L.divIcon({
+            html: `<img src="${offerClusterIcon}" style="width: 40px; height: 40px;" />`,
+            iconSize: L.point(40, 40, true)
+        })
+    },
+    
+    //Εικόνα για μικτό cluster
+    multiClusterIcon: function (cluster) {
+        return L.divIcon({
+            html: `<img src="${multiClusterIcon}" style="width: 40px; height: 40px;" />`,
+            iconSize: L.point(40, 40, true)
+        })
+    }
+    
+};
+

@@ -1,0 +1,50 @@
+.mycluster {
+    width: 40px;
+    height: 40px;
+    background-color: greenyellow;
+    text-align: center;
+    font-size: 24px;
+}
+
+.custom-cluster-icon {
+    background: #ffffff;
+    border: 15px solid #f00800;
+    border-radius: 50%;
+    color: #000000;
+    height: 33px;
+    line-height: 37px;
+    text-align: center;
+    width: 33px;
+}
+
+.icon-container {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Adjust the size according to your icon */
+    height: 50px; /* Adjust the size according to your icon */
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.request-cluster-icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(255, 168, 47);
+    text-align: center;
+    font-size: 24px;
+}

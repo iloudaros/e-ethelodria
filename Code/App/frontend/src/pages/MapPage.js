@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import CustomNavbar from '../components/Navbar';
+import axios from 'axios';
+import '../App.css';
 
+// Εισαγωγή του Leaflet
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet.locatecontrol';
-import axios from 'axios';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import 'leaflet/dist/leaflet.css';
 
+// Custom Components
+import CustomNavbar from '../components/Navbar';
 
 // Ειδικά Εικονίδια για το Leaflet
 import {icons} from '../assets/icons';
-
-console.log('Leaflet icons:', icons.baseIcon);
-
+import '../assets/icons.css';
 
 
 const MapPage = () => {
@@ -22,6 +25,9 @@ const MapPage = () => {
     const [position, setPosition] = useState(null); // Default position (Athens, Greece)
     const [user, setUser] = useState(null);
     const [base, setBase] = useState(null);
+    const [vehicles, setVehicles] = useState([]);
+    const [requests, setRequests] = useState([]);
+    const [offers, setOffers] = useState([]);
     
     
     // Χρήση useEffect για να ανακτήσουμε το χρήστη από το localStorage
@@ -44,13 +50,44 @@ const MapPage = () => {
                         const { latitude, longitude } = response.data;
                         setPosition([latitude, longitude]);
                         
-                        // Αν ο χρήστης είναι admin, συλλέγουμε επίσης την θέση της αποθηκής
+                        // Αν ο χρήστης είναι admin, συλλέγουμε επίσης τα επιπλέον στοιχεία που πρέπει να εμφανίζονται στο χάρτη
                         if (parsedUser.is_admin) {
-                            console.log(`User is admin, fetching warehouse location of admin with admin_id:${parsedUser.id}`);
+                            console.log(`User is admin.`) 
+                            
+                            // Αποθήκη
+                            console.log(`Fetching warehouse location of admin with admin_id: ${parsedUser.id}`);
                             axios.get(`http://localhost:3000/api/warehouse/${parsedUser.id}`)
                             .then((response) => {
                                 console.log(`Warehouse location - lat:${response.data.latitude}, long:${response.data.longitude}`);
                                 setBase({id: response.data.id, latitude: response.data.latitude, longitude: response.data.longitude});
+                            })
+                            
+                            // Οχήματα
+                            console.log(`Fetching vehicles of rescuers`);
+                            axios.get(`http://localhost:3000/api/vehicle/all`)
+                            .then((response) => {
+                                console.log(`Vehicles fetched: ${response.data.length}`);
+                                console.log(response.data);
+                                setVehicles(response.data);
+                            })
+                            
+                            // Αιτήματα
+                            console.log(`Fetching requests`);
+                            axios.get(`http://localhost:3000/api/requests/all`)
+                            .then ((response) => {
+                                console.log(`Requests fetched: ${response.data.length}`);
+                                console.log(response.data);
+                                setRequests(response.data);
+                            })
+                            
+                            
+                            // Προσφορές
+                            console.log(`Fetching offers`);
+                            axios.get(`http://localhost:3000/api/offers/all`)
+                            .then ((response) => {
+                                console.log(`Offers fetched: ${response.data.length}`);
+                                console.log(response.data);
+                                setOffers(response.data);
                             })
                         }
                         
@@ -122,13 +159,85 @@ const MapPage = () => {
         return null;
     };
     
-    if (!user || !position || !base) {
+    
+    // Component για να προβάλουμε τους markers των οχημάτων
+    function VehicleMarkers() {
+        return (
+            <>
+            {vehicles.map((vehicle) => (
+                <Marker key={vehicle.id} position={[vehicle.latitude, vehicle.longitude]} icon={icons.rescueIcon} >
+                <Popup>
+                <h3>{vehicle.username}</h3>
+                <p>ID: {vehicle.id}</p>
+                <p>Κατάσταση: {vehicle.state}</p>
+                <p>Τοποθεσία: {vehicle.latitude}, {vehicle.longitude}</p>
+                </Popup>
+                </Marker>
+            ))}
+            </>
+        );
+    }
+    
+    // Component για να προβάλουμε τους markers των αιτημάτων
+    function RequestMarkers() {
+        return (
+            <>
+            <MarkerClusterGroup 
+            chunkedLoading
+            >
+            {requests.map((request) => (
+                <Marker key={request.id} position={[request.userLocation.latitude, request.userLocation.longitude]} icon={request.state=='published'?icons.requestIcon:icons.requestIconOk} >
+                <Popup>
+                <h3>Request</h3>
+                <p>ID: {request.id}</p>
+                <p>Κατάσταση: {request.state}</p>
+                <p>Τοποθεσία: {request.userLocation.latitude}, {request.userLocation.longitude}</p>
+                <p>Καταχώρηση: {request.date_in}</p>
+                <p>Κατανομή: {request.accepted_in}</p>
+                <p>Αποστολή: {request.date_out}</p>
+                </Popup>
+                </Marker>
+            ))}
+            </MarkerClusterGroup>
+            </>
+        );
+    }
+    
+    
+    
+    // Component για να προβάλουμε τους markers των προσφορών
+    function OffertMarkers() {
+        return (
+            <>
+            <MarkerClusterGroup 
+            chunkedLoading
+            >
+            {offers.map((offer) => (
+                <Marker key={offer.id} position={[offer.userLocation.latitude, offer.userLocation.longitude]} icon={offer.state=='published'?icons.offerIcon:icons.offerIconOk} >
+                <Popup>
+                <h3>Offer</h3>
+                <p>ID: {offer.id}</p>
+                <p>Κατάσταση: {offer.state}</p>
+                <p>Τοποθεσία: {offer.userLocation.latitude}, {offer.userLocation.longitude}</p>
+                <p>Καταχώρηση: {offer.date_in}</p>
+                <p>Κατανομή: {offer.accepted_in}</p>
+                <p>Αποστολή: {offer.date_out}</p>
+                </Popup>
+                </Marker>
+            ))}
+            </MarkerClusterGroup>
+            </>
+        );
+    }
+    
+    if (!user || !position || (!user.is_citizen && (!base || !vehicles || !requests || !offers))) {
         return <p>Loading...</p>;
     }
     
     return (
         <>
         <CustomNavbar user={user} />
+        
         <Container fluid className="p-0">
         <MapContainer center={position} zoom={13} style={{ height: '90vh' }}>
         <TileLayer
@@ -136,13 +245,23 @@ const MapPage = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWithLocateControl />
-        // Εμφάνιση της θέσης της βάσης
+        {/* Εμφάνιση της θέσης της βάσης */}
         <Marker position={[base.latitude, base.longitude]} icon={icons.baseIcon} >
         <Popup>
         <h3>Βάση</h3>
         <p>Τοποθεσία: {base.latitude}, {base.longitude}</p>
         </Popup>
         </Marker>
+        {/* Εμφάνιση των θέσεων των οχημάτων διασωστών */}
+        <VehicleMarkers/>
+        
+        <MarkerClusterGroup chunkedLoading>
+        {/* Εμφάνιση της θέσης των αιτημάτων*/} 
+        <RequestMarkers/>
+        
+        {/* Εμφάνιση της θέσης των προσφορών*/}
+        <OffertMarkers/>
+        </MarkerClusterGroup>
         </MapContainer>
         </Container>
         </>

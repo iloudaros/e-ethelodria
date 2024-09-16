@@ -4,7 +4,7 @@ const warehouseController = {
     // This method gets the location and the id of the base of a certain admin
     getBase: async (req, res) => {
         const { admin } = req.params;
-        console.log('Received request for admin:', admin);
+        console.log('Received base location request for admin:', admin);
         try {
             const [rows] = await pool.query('SELECT latitude, longitude FROM Base WHERE admin = UUID_TO_BIN(?)', [admin]);
             if (rows.length === 0 ) {
