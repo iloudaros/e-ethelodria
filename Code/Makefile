@@ -12,17 +12,30 @@ include $(BACKEND_DIR)/.env
 
 # Database
 create_DB:
+	@echo "Creating database..."
 	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < $(DB_DIR)/e-ethelodria.create.sql
 	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < $(DB_DIR)/e-ethelodria.triggers.sql
 	@echo "✅"
-	
 
-initialise_DB:
+insert_users:
+	@echo "Inserting users..."
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < $(DB_DIR)/e-ethelodria.insertUsers.sql
+	@echo "✅"
+	
+import_json:
+	@echo "Inserting json data..."
 	@node Data/import-data.js
+	@echo "✅"
+
+insert_tasks_announcements_inventories:
+	@echo "Inserting tasks, announcements and inventories ..."
 	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) < $(DB_DIR)/e-ethelodria.inserts.sql
 	@echo "✅"
 
-DB: create_DB initialise_DB
+
+
+DB: create_DB insert_users import_json insert_tasks_and_announcements
+DB_only_users: create_DB insert_users
 
 
 # Installation
@@ -37,6 +50,8 @@ install_dependencies:
 # Initialisation
 init: create_DB install_dependencies # Initialise the database and install dependencies
 demo: DB install_dependencies # Initialise the database, install dependencies and insert demo data
+demo_no_tasks_announcements: DB install_dependencies insert_users # Initialise the database, install dependencies and insert demo data without tasks and announcements
+
 
 
 # Run
@@ -53,8 +68,8 @@ start_e-ethelodria:
 ## Recipe to stop backend and frontend screen sessions
 stop_e-ethelodria:
 	@echo "Stopping backend and frontend screen sessions..."
-	@-screen -S e-ethelodria-backend -XS quit
-	@-screen -S e-ethelodria-frontend -XS quit
+	@-screen -XS e-ethelodria-backend quit
+	@-screen -XS e-ethelodria-frontend quit
 	@pkill -f "npx nodemon index.js" || true
 	@pkill -f "npm start" || true
 	@echo "Backend and Frontend screen sessions have been stopped."
@@ -64,6 +79,10 @@ stop_e-ethelodria:
 # Tests
 test_env_exists:
 	@echo $(DB_NAME)
+
+test_db_exists: # Check if the database exists and is accessible. 
+	@echo "Checking if the database exists and is accessible..."
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) -e "USE $(DB_NAME);" 
 
 
 
@@ -76,7 +95,7 @@ drop_DB:
 delete_node_modules:
 	@echo "Deleting node_modules..."
 	@rm -rf $(BACKEND_DIR)/node_modules
-	@rm -rf $(FRONTEND_DIR)/node_modules
+	@rm -rf $(FRONTEND_DIR)/node_modules 
 	@echo "✅"
 
 clean: delete_node_modules drop_DB

@@ -55,10 +55,10 @@ const MapPage = () => {
                             console.log(`User is admin.`) 
                             
                             // Αποθήκη
-                            console.log(`Fetching warehouse location of admin with admin_id: ${parsedUser.id}`);
-                            axios.get(`http://localhost:3000/api/warehouse/${parsedUser.id}`)
+                            console.log(`Fetching base location of admin with admin_id: ${parsedUser.id}`);
+                            axios.get(`http://localhost:3000/api/base/baseInfo/${parsedUser.id}`)
                             .then((response) => {
-                                console.log(`Warehouse location - lat:${response.data.latitude}, long:${response.data.longitude}`);
+                                console.log(`base location - lat:${response.data.latitude}, long:${response.data.longitude}`);
                                 setBase({id: response.data.id, latitude: response.data.latitude, longitude: response.data.longitude});
                             })
                             

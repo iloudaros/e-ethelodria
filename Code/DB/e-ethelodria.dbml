@@ -68,7 +68,7 @@ Table Details [headercolor: #99CD71]
 
 Table Category [headercolor: #2D6512]
 {
-  id integer [pk]
+  id integer [pk, increment]
   name varchar   
 }
 

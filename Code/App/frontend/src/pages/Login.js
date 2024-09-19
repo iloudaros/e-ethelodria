@@ -7,18 +7,16 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [usernames, setUsernames] = useState([]);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const response = await authService.login(username, password);
-    console.log('Login response:', response); // Προσθήκη για εντοπισμό του προβλήματος
+    console.log('Login response:', response);
     if (response.message === 'Login successful') {
       navigate('/map', { state: { user: response.user } });
     } else {
       setMessage(response.message);
-      setUsernames(response.usernames || []);
     }
   };
 
@@ -51,11 +49,6 @@ const Login = () => {
         </Button>
 
         {message && <Alert variant="danger" className="mt-3">{message}</Alert>}
-        {usernames.length > 0 && (
-          <Alert variant="info" className="mt-3">
-            Here are some existing users: {usernames.join(', ')}
-          </Alert>
-        )}
       </Form>
     </Container>
   );

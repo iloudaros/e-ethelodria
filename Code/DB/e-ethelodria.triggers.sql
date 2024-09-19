@@ -30,8 +30,9 @@ BEGIN
   IF NOT (EXISTS (SELECT 1 FROM `User` WHERE `User`.`id` = NEW.`id`) OR
           EXISTS (SELECT 1 FROM `Vehicle` WHERE `Vehicle`.`id` = NEW.`id`) OR
           EXISTS (SELECT 1 FROM `Task` WHERE Task.id = NEW.id) OR
-          EXISTS (SELECT 1 FROM `Announcement` WHERE Announcement.id = NEW.id)) THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is not a vehicle, nor a user with this id.';
+          EXISTS (SELECT 1 FROM `Announcement` WHERE Announcement.id = NEW.id) OR 
+          EXISTS (SELECT 1 FROM `Base`WHERE Base.id = NEW.id)) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid id.';
   END IF;
 END$
 DELIMITER ;

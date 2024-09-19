@@ -5,8 +5,9 @@ require('dotenv').config();
 
 // Route Files
 const userRoutes = require('./routes/userRoutes');
-const warehouseRoutes = require('./routes/warehouseRoutes');
+const baseRoutes = require('./routes/baseRoutes');
 const productRoutes = require('./routes/productRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const offerRoutes = require('./routes/offerRoutes');
@@ -30,11 +31,14 @@ app.use(bodyParser.json());
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/users στο userRoutes
 app.use('/api/users', userRoutes);
 
-// Αναθέτει τις αιτήσεις που ξεκινούν με /api/warehouse στο warehouseRoutes
-app.use('/api/warehouse', warehouseRoutes);
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/base στο baseRoutes
+app.use('/api/base', baseRoutes);
 
-// Αναθέτει τις αιτήσεις που ξεκινούν με /api/warehouse στο warehouseRoutes
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/product στο productRoutes
 app.use('/api/product', productRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/inventory στο inventoryRoutes
+app.use('/api/inventory', inventoryRoutes);
 
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/vehicle στο vehicleRoutes
 app.use('/api/vehicle', vehicleRoutes);

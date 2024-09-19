@@ -9,21 +9,19 @@ const userController = {
       const [rows] = await pool.query('select hex(id) as id, username, password, email, telephone, name, surname, longitude, latitude, is_admin, is_diasostis, is_citizen  from User where username = ?', [username]);
       if (rows.length === 0) {
         console.log('User not found');
-        const [users] = await pool.query('SELECT username FROM User LIMIT 5');
-        const usernames = users.map(user => user.username);
-        return res.status(404).json({ message: 'User not found', usernames });
+        return res.status(404).json({ message: 'User not found'});
       }
       
       const user = rows[0];
+
       if (password !== user.password) {
         console.log('Invalid password');
-        const [users] = await pool.query('SELECT username FROM User LIMIT 5');
-        const usernames = users.map(user => user.username);
-        return res.status(401).json({ message: 'Invalid password', usernames });
+        return res.status(401).json({ message: 'Invalid password'});
       }
 
       console.log('Login successful', user);
       res.json({ message: 'Login successful', user });
+
     } catch (error) {
       console.error('Server error:', error);
       res.status(500).json({ message: 'Server error', error });
@@ -64,7 +62,7 @@ const userController = {
       console.error('Server error:', error);
       res.status(500).json({ message: 'Server error', error });
     }
-  },
+  }
   
 };
 

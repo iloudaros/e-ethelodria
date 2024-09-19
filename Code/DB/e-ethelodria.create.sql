@@ -59,7 +59,7 @@ CREATE TABLE `Details` (
 );
 
 CREATE TABLE `Category` (
-  `id` integer PRIMARY KEY,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255)
 );
 
