@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import './icons.css';
 
 // Εικόνα για τα cluster
 import offerClusterIcon from './icon_pngs/offerCluster.png';

@@ -62,6 +62,25 @@ const userController = {
       console.error('Server error:', error);
       res.status(500).json({ message: 'Server error', error });
     }
+  },
+
+  // The method that lets us get the information of a user
+  getUserInfo: async (req, res) => {
+    const { username } = req.params;
+    try {
+      console.log('Received user request for:', username);
+      const [rows] = await pool.query('SELECT * FROM User WHERE username = ?', [username]);
+      if (rows.length === 0) {
+        console.log('User not found');
+        return res.status(404).json({ message: 'User not found' });
+      }
+      const user = rows[0];
+      console.log('User found:', user);
+      res.json(user);
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
   }
   
 };

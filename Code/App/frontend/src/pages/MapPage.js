@@ -6,17 +6,17 @@ import '../App.css';
 
 // Εισαγωγή του Leaflet
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
 import 'leaflet.locatecontrol';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import 'leaflet/dist/leaflet.css';
 
 // Custom Components
 import CustomNavbar from '../components/Navbar';
+import InventoryList from '../components/InventoryList';
 
 // Ειδικά Εικονίδια για το Leaflet
 import {icons} from '../assets/icons';
-import '../assets/icons.css';
 
 
 const MapPage = () => {
@@ -27,8 +27,8 @@ const MapPage = () => {
     const [base, setBase] = useState(null);
     const [vehicles, setVehicles] = useState([]);
     const [requests, setRequests] = useState([]);
-    const [offers, setOffers] = useState([]);
-    
+    const [offers, setOffers] = useState([]);   
+    const [visiblePolyline, setVisiblePolyline] = useState(null); 
     
     // Χρήση useEffect για να ανακτήσουμε το χρήστη από το localStorage
     useEffect(() => {
@@ -90,8 +90,6 @@ const MapPage = () => {
                                 setOffers(response.data);
                             })
                         }
-                        
-                        
                         
                     })
                     .catch((error) => {
@@ -158,114 +156,134 @@ const MapPage = () => {
         
         return null;
     };
-    
+
     
     // Component για να προβάλουμε τους markers των οχημάτων
     function VehicleMarkers() {
+        console.log('VehicleMarkers component called');
         return (
             <>
-            {vehicles.map((vehicle) => (
-                <Marker key={vehicle.id} position={[vehicle.latitude, vehicle.longitude]} icon={icons.rescueIcon} >
-                <Popup>
-                <h3>{vehicle.username}</h3>
-                <p>ID: {vehicle.id}</p>
-                <p>Κατάσταση: {vehicle.state}</p>
-                <p>Τοποθεσία: {vehicle.latitude}, {vehicle.longitude}</p>
-                </Popup>
-                </Marker>
-            ))}
+                {vehicles.map((vehicle) => (
+                    <Marker key={vehicle.id} position={[vehicle.latitude, vehicle.longitude]} icon={icons.rescueIcon} 
+                    eventHandlers={{
+                            popupopen: () => {
+                                console.log('Marker clicked for vehicle with id:', vehicle.id);
+                                setVisiblePolyline(vehicle.id);
+                            },
+                            popupclose: () => {
+                                console.log('Marker closed for vehicle with id:', vehicle.id);
+                                setVisiblePolyline(null);
+                            }
+
+                        }}
+                    >
+                        <Popup>
+                            <h3>{vehicle.username}</h3>
+                            <p>ID: {vehicle.id}</p>
+                            <InventoryList id={vehicle.id} />
+                            <p>Κατάσταση: {vehicle.state}</p>
+                            {visiblePolyline === vehicle.id && (
+                                
+                                <Polyline positions={[[vehicle.latitude, vehicle.longitude], [0, 0]]} color="grey" />
+                            )}
+                        </Popup>
+                    </Marker>
+                ))}
             </>
         );
     }
-    
-    // Component για να προβάλουμε τους markers των αιτημάτων
-    function RequestMarkers() {
-        return (
-            <>
-            <MarkerClusterGroup 
-            chunkedLoading
-            >
-            {requests.map((request) => (
-                <Marker key={request.id} position={[request.userLocation.latitude, request.userLocation.longitude]} icon={request.state=='published'?icons.requestIcon:icons.requestIconOk} >
-                <Popup>
-                <h3>Request</h3>
-                <p>ID: {request.id}</p>
-                <p>Κατάσταση: {request.state}</p>
-                <p>Τοποθεσία: {request.userLocation.latitude}, {request.userLocation.longitude}</p>
-                <p>Καταχώρηση: {request.date_in}</p>
-                <p>Κατανομή: {request.accepted_in}</p>
-                <p>Αποστολή: {request.date_out}</p>
-                </Popup>
-                </Marker>
-            ))}
-            </MarkerClusterGroup>
-            </>
-        );
-    }
-    
-    
-    
-    // Component για να προβάλουμε τους markers των προσφορών
-    function OffertMarkers() {
-        return (
-            <>
-            <MarkerClusterGroup 
-            chunkedLoading
-            >
-            {offers.map((offer) => (
-                <Marker key={offer.id} position={[offer.userLocation.latitude, offer.userLocation.longitude]} icon={offer.state=='published'?icons.offerIcon:icons.offerIconOk} >
-                <Popup>
-                <h3>Offer</h3>
-                <p>ID: {offer.id}</p>
-                <p>Κατάσταση: {offer.state}</p>
-                <p>Τοποθεσία: {offer.userLocation.latitude}, {offer.userLocation.longitude}</p>
-                <p>Καταχώρηση: {offer.date_in}</p>
-                <p>Κατανομή: {offer.accepted_in}</p>
-                <p>Αποστολή: {offer.date_out}</p>
-                </Popup>
-                </Marker>
-            ))}
-            </MarkerClusterGroup>
-            </>
-        );
-    }
-    
-    if (!user || !position || (!user.is_citizen && (!base || !vehicles || !requests || !offers))) {
-        return <p>Loading...</p>;
-    }
-    
+
+
+// Component για να προβάλουμε τους markers των αιτημάτων
+function RequestMarkers() {
+    console.log('RequestMarkers component called');
     return (
         <>
-        <CustomNavbar user={user} />
-        
-        <Container fluid className="p-0">
-        <MapContainer center={position} zoom={13} style={{ height: '90vh' }}>
-        <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <MapWithLocateControl />
-        {/* Εμφάνιση της θέσης της βάσης */}
-        <Marker position={[base.latitude, base.longitude]} icon={icons.baseIcon} >
-        <Popup>
-        <h3>Βάση</h3>
-        <p>Τοποθεσία: {base.latitude}, {base.longitude}</p>
-        </Popup>
-        </Marker>
-        {/* Εμφάνιση των θέσεων των οχημάτων διασωστών */}
-        <VehicleMarkers/>
-        
-        <MarkerClusterGroup chunkedLoading>
-        {/* Εμφάνιση της θέσης των αιτημάτων*/} 
-        <RequestMarkers/>
-        
-        {/* Εμφάνιση της θέσης των προσφορών*/}
-        <OffertMarkers/>
+        <MarkerClusterGroup 
+        chunkedLoading
+        >
+        {requests.map((request) => (
+            <Marker key={request.id} position={[request.userLocation.latitude, request.userLocation.longitude]} icon={request.state=='published'?icons.requestIcon:icons.requestIconOk} >
+            <Popup>
+            <h3>Request</h3>
+            <p>ID: {request.id}</p>
+            <p>Κατάσταση: {request.state}</p>
+            <p>Τοποθεσία: {request.userLocation.latitude}, {request.userLocation.longitude}</p>
+            <p>Καταχώρηση: {request.date_in}</p>
+            <p>Κατανομή: {request.accepted_in}</p>
+            <p>Αποστολή: {request.date_out}</p>
+            </Popup>
+            </Marker>
+        ))}
         </MarkerClusterGroup>
-        </MapContainer>
-        </Container>
         </>
     );
+}
+
+
+
+// Component για να προβάλουμε τους markers των προσφορών
+function OffertMarkers() {
+    return (
+        <>
+        <MarkerClusterGroup 
+        chunkedLoading
+        >
+        {offers.map((offer) => (
+            <Marker key={offer.id} position={[offer.userLocation.latitude, offer.userLocation.longitude]} icon={offer.state=='published'?icons.offerIcon:icons.offerIconOk} >
+            <Popup>
+            <h3>Offer</h3>
+            <p>ID: {offer.id}</p>
+            <p>Κατάσταση: {offer.state}</p>
+            <p>Τοποθεσία: {offer.userLocation.latitude}, {offer.userLocation.longitude}</p>
+            <p>Καταχώρηση: {offer.date_in}</p>
+            <p>Κατανομή: {offer.accepted_in}</p>
+            <p>Αποστολή: {offer.date_out}</p>
+            </Popup>
+            </Marker>
+        ))}
+        </MarkerClusterGroup>
+        </>
+    );
+}
+
+if (!user || !position || (!user.is_citizen && (!base || !vehicles || !requests || !offers))) {
+    return <p>Loading...</p>;
+}
+
+return (
+    <>
+    <CustomNavbar user={user} />
+    
+    <Container fluid className="p-0">
+    <MapContainer center={position} zoom={13} style={{ height: '90vh' }}>
+    <TileLayer
+    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    />
+    <MapWithLocateControl />
+    
+    {/* Εμφάνιση της θέσης της βάσης */}
+    <Marker position={[base.latitude, base.longitude]} icon={icons.baseIcon} >
+    <Popup>
+    <h3>Βάση</h3>
+    <p>Τοποθεσία: {base.latitude}, {base.longitude}</p>
+    </Popup>
+    </Marker>
+    
+    {/* Εμφάνιση των θέσεων των οχημάτων διασωστών */}
+    <VehicleMarkers/>
+    
+    {/* Εμφάνιση της θέσης των αιτημάτων*/} 
+    <RequestMarkers/>
+    
+    {/* Εμφάνιση της θέσης των προσφορών*/}
+    <OffertMarkers/>
+    
+    </MapContainer>
+    </Container>
+    </>
+);
 };
 
 export default MapPage;
