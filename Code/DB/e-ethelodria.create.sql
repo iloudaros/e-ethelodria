@@ -98,6 +98,8 @@ ALTER TABLE `Announcement_List` ADD FOREIGN KEY (`announcement`) REFERENCES `Ann
 
 ALTER TABLE `Product_List` ADD FOREIGN KEY (`product`) REFERENCES `Product` (`id`);
 
+ALTER TABLE `Task_List` ADD FOREIGN KEY (`id`) REFERENCES `Vehicle` (`id`);
+
 ALTER TABLE `Task_List` ADD FOREIGN KEY (`task`) REFERENCES `Task` (`id`);
 
 ALTER TABLE `Product` ADD FOREIGN KEY (`category`) REFERENCES `Category` (`id`);

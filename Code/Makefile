@@ -34,7 +34,7 @@ insert_tasks_announcements_inventories:
 
 
 
-DB: create_DB insert_users import_json insert_tasks_and_announcements
+DB: create_DB insert_users import_json insert_tasks_announcements_inventories
 DB_only_users: create_DB insert_users
 
 
@@ -50,7 +50,7 @@ install_dependencies:
 # Initialisation
 init: create_DB install_dependencies # Initialise the database and install dependencies
 demo: DB install_dependencies # Initialise the database, install dependencies and insert demo data
-demo_no_tasks_announcements: DB install_dependencies insert_users # Initialise the database, install dependencies and insert demo data without tasks and announcements
+demo_only_users: DB install_dependencies insert_users # Initialise the database, install dependencies and insert demo data without tasks and announcements
 
 
 
@@ -98,4 +98,10 @@ delete_node_modules:
 	@rm -rf $(FRONTEND_DIR)/node_modules 
 	@echo "✅"
 
-clean: delete_node_modules drop_DB
+delete_package_lock:
+	@echo "Deleting package-lock.json..."
+	@rm -f $(BACKEND_DIR)/package-lock.json
+	@rm -f $(FRONTEND_DIR)/package-lock.json
+	@echo "✅"
+
+clean: delete_node_modules delete_package_lock drop_DB
