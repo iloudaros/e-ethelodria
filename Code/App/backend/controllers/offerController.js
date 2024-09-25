@@ -9,10 +9,15 @@ const offerController = {
             const [rows] = await pool.query('SELECT hex(id) as id, hex(user_id) as user, date_in, accepted_in, date_out, state, type FROM Task where type = "offering"');
             // Add the corresponding user's location to each offer
             const offersWithUsers = await Promise.all(rows.map(async (offer) => {
-                const [userRow] = await pool.query('SELECT latitude, longitude FROM User WHERE id = UUID_TO_BIN(?)', [offer.user]);
+                const [userRow] = await pool.query('SELECT latitude, longitude, name, surname, telephone FROM User WHERE id = UUID_TO_BIN(?)', [offer.user]);
                 return {
                     ...offer,
-                    userLocation: userRow[0]
+                    userLocation: {
+                        latitude: userRow[0].latitude,
+                        longitude: userRow[0].longitude
+                    },
+                    userName: userRow[0].name + ' ' + userRow[0].surname,
+                    userTelephone: userRow[0].telephone
                 };
             }));
             console.log('offers fetched:', offersWithUsers.length);

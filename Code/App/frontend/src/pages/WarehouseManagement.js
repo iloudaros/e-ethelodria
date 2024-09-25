@@ -391,7 +391,7 @@ const WarehouseManagement = () => {
       <td>{product.name}</td>
       <td>{product.category}</td>
       <td>{product.details.map(detail => (
-        <div key={detail.index} >{detail.name}: {detail.value}</div>
+        <div key={detail.index}>{detail.name} {(detail.name && detail.value) && ':'} {detail.value}</div>
       ))}</td>
       <td>
       <Button style={{ margin: '5px' }} variant="info" onClick={() => handleEditProduct(product.id)}>

@@ -4,38 +4,43 @@ import { useNavigate } from 'react-router-dom';
 
 const CustomNavbar = ({ user }) => {
   const navigate = useNavigate();
-
+  
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/login');
   };
 
+
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" style={{ marginBottom: '20px' }}>
       <Container>
         <Navbar.Brand href="#home">e-ethelodria</Navbar.Brand>
         <Nav className="me-auto">
+          {user && (user.is_admin || user.is_diasostis) && (
+            <>
+            <Nav.Link onClick={() => navigate('/map')}>Χάρτης</Nav.Link>
+            </>
+          )}
+          
           {user && user.is_admin && (
             <>
               <Nav.Link onClick={() => navigate('/warehouse-management')}>Διαχείριση Αποθήκης</Nav.Link>
-              <Nav.Link onClick={() => navigate('/map') }>Χάρτης</Nav.Link>
-              <Nav.Link href="#create-account">Στατιστικά</Nav.Link>
-              <Nav.Link href="#create-account">Λογαριασμοί Διασωστών</Nav.Link>
+              <Nav.Link onClick={() => navigate('/stats')}>Στατιστικά</Nav.Link>
+              <Nav.Link onClick={() => navigate('/rescuer-management')}>Λογαριασμοί Διασωστών</Nav.Link>
               <Nav.Link href="#create-account">Ανακοινώσεις</Nav.Link>
             </>
           )}
-
-          {user && user.is_diasostiss && (
+          
+          {user && user.is_diasostis && (
             <>
-              <Nav.Link onClick={() => navigate('/map') }>Φορτίο</Nav.Link>
-              <Nav.Link href="#create-account">Χάρτης</Nav.Link>
+              <Nav.Link onClick={() => navigate('/vehicle-management')}>Διαχείριση Φορτίου</Nav.Link>
+              <Nav.Link onClick={() => navigate('/map')}>Φορτίο</Nav.Link>
               <Nav.Link href="#create-account">Εργασίες</Nav.Link>
             </>
           )}
-        
         </Nav>
         <Nav>
-          {user && <Nav.Link href="#user">{user.username}</Nav.Link>}
+          {user?.username && <Nav.Link href="#user">{user.username}</Nav.Link>}
           {user && <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>}
         </Nav>
       </Container>

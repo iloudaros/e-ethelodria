@@ -78,11 +78,33 @@ stop_e-ethelodria:
 
 # Tests
 test_env_exists:
-	@echo $(DB_NAME)
+	@echo "\nChecking if environment variables are set..."
+	@if [ -z "$(DB_NAME)" ] || [ -z "$(DB_USER)" ] || [ -z "$(DB_PASSWORD)" ]; then \
+		echo "❌ Environment variables DB_NAME, DB_USER, or DB_PASSWORD are not set.\n"; \
+		exit 1; \
+	else \
+		echo "✅ Environment variables are set.\n"; \
+	fi
 
 test_db_exists: # Check if the database exists and is accessible. 
 	@echo "Checking if the database exists and is accessible..."
-	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) -e "USE $(DB_NAME);" 
+	@$(MYSQL) -u $(DB_USER) -p$(DB_PASSWORD) -e "USE $(DB_NAME);" && echo "✅ Database is accessible.\n" || echo "❌ Database is not accessible.\n"
+
+test_screen_sessions:
+	@echo "Checking if screen sessions for backend and frontend are active..."
+	@if screen -list | grep -q "e-ethelodria-backend"; then \
+		echo "✅ Backend screen session is active."; \
+	else \
+		echo "❌ Backend screen session is not active."; \
+	fi
+	@if screen -list | grep -q "e-ethelodria-frontend"; then \
+		echo "✅ Frontend screen session is active."; \
+	else \
+		echo "❌ Frontend screen session is not active."; \
+	fi
+
+is_ethelodria_ready: test_env_exists test_db_exists test_screen_sessions
+
 
 
 
@@ -104,4 +126,10 @@ delete_package_lock:
 	@rm -f $(FRONTEND_DIR)/package-lock.json
 	@echo "✅"
 
-clean: delete_node_modules delete_package_lock drop_DB
+clean_cache:
+	@echo "Cleaning cache..."
+	@cd $(BACKEND_DIR) && npm cache clean --force
+	@cd $(FRONTEND_DIR) && npm cache clean --force
+	@echo "✅"
+
+clean: delete_node_modules delete_package_lock drop_DB clean_cache

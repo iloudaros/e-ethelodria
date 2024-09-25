@@ -23,7 +23,6 @@ const InventoryList = ( id ) => {
     // Returns a nice table with the inventory data
     return (
         <>
-        <h5>Inventory</h5>
         {inventory.length >0?
         <table style={{border: '1px solid grey', borderCollapse: 'collapse', width: '100%'}}>
         <thead>

@@ -14,7 +14,17 @@ const Login = () => {
     const response = await authService.login(username, password);
     console.log('Login response:', response);
     if (response.message === 'Login successful') {
-      navigate('/map', { state: { user: response.user } });
+      if (response.user.is_diasostis ) {
+
+        navigate('/map', { state: { user: response.user } });
+
+      } else if (response.user.is_admin){
+
+        navigate('/warehouse-management', { state: { user: response.user } });
+
+      } else {
+        navigate('/vehicle-management', { state: { user: response.user } });
+      }
     } else {
       setMessage(response.message);
     }

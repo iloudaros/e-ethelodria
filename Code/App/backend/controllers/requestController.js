@@ -7,13 +7,19 @@ const requestController = {
         try {
             console.log('Fetching requests...');
             const [rows] = await pool.query('SELECT hex(id) as id, hex(user_id) as user, date_in, accepted_in, date_out, state, type FROM Task where type = "request"');
-            // Add the corresponding user's location to each request
+            // Add the corresponding user's location, name and phone number to each request
             const requestsWithUsers = await Promise.all(rows.map(async (request) => {
-                const [userRow] = await pool.query('SELECT latitude, longitude FROM User WHERE id = UUID_TO_BIN(?)', [request.user]);
+                const [userRow] = await pool.query('SELECT latitude, longitude, name, surname, telephone FROM User WHERE id = UUID_TO_BIN(?)', [request.user]);
                 return {
                     ...request,
-                    userLocation: userRow[0]
+                    userLocation: {
+                        latitude: userRow[0].latitude,
+                        longitude: userRow[0].longitude
+                    },
+                    userName: userRow[0].name + ' ' + userRow[0].surname,
+                    userTelephone: userRow[0].telephone
                 };
+                
             }));
             console.log('Requests fetched:', requestsWithUsers.length);
             res.json(requestsWithUsers);
