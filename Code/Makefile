@@ -64,6 +64,7 @@ start_e-ethelodria:
 	@echo "Use 'screen -ls' to list sessions."
 	@echo "Use 'screen -r e-ethelodria-backend' to attach to the backend session."
 	@echo "Use 'screen -r e-ethelodria-frontend' to attach to the frontend session."
+	@echo "screen -ls"
 
 ## Recipe to stop backend and frontend screen sessions
 stop_e-ethelodria:

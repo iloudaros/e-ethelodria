@@ -34,7 +34,7 @@ const InventoryList = ( id ) => {
         <tbody>
         {inventory.map((item) => (
             <tr key={item.product}>
-            <td>{item.product}</td>
+            <td>{item.name}</td>
             <td>{item.quantity}</td>
             </tr>
         ))}

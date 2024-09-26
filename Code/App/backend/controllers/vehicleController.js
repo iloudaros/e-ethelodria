@@ -60,23 +60,36 @@ const vehicleController = {
         try {
             const { owner } = req.params;
             const [rows] = await pool.query('SELECT hex(id) as id, username, hex(owner) as owner, latitude, longitude, state FROM Vehicle WHERE owner = UUID_TO_BIN(?)', [owner]);
+            
+            if (rows.length === 0) {
+                return res.status(404).json({ message: 'Vehicle not found' });
+            }
+    
             const [product_list] = await pool.query('SELECT hex(id) as id, product, quantity FROM Product_List WHERE id = UUID_TO_BIN(?)', [rows[0].id]);
             
             // for every product in the inventory, get the product name and the quantity from the Product table
             const inventory = await Promise.all(product_list.map(async (product) => {
-                const [product_name] = await pool.query('SELECT name FROM Product WHERE id = ?', [product.product]);
+                const [product_name] = await pool.query('SELECT hex(id) as id, name FROM Product WHERE id = ?', [product.product]);
+                if (product_name.length === 0) {
+                    return null;
+                }
                 return {
-                    ...product,
-                    product: product_name[0].name
-                }}));
-
+                    id: product_name[0].id,
+                    name: product_name[0].name,
+                    quantity: product.quantity
+                };
+            }));
+    
+            // Filter out any null products (in case a product was not found in the Product table)
+            const filteredInventory = inventory.filter(product => product !== null);
+    
             const [taskids] = await pool.query('SELECT task FROM Task_List WHERE id = UUID_TO_BIN(?)', [rows[0].id]);
             const [tasks] = await pool.query('SELECT hex(id) as id, hex(user_id) as user, date_in, accepted_in, date_out, state, type FROM Task WHERE id = ?', [taskids[0].task]);
             
             // create a new object with the above data
             const vehicle = {
                 ...rows[0],
-                inventory: inventory,
+                inventory: filteredInventory,
                 tasks: tasks
             };
             res.json(vehicle);
@@ -84,7 +97,20 @@ const vehicleController = {
             console.error('Error fetching vehicle:', error);
             res.status(500).json({ message: 'Server error', error });
         }
+    },
+
+    updateLocation: async (req, res) =>{
+        const {id, latitude, longitude} = req.body;
+        console.log('Received location update request for:', id);
+        try {
+            await pool.query('UPDATE Base SET latitude = ?, longitude = ? WHERE id = UUID_TO_BIN(?)', [latitude, longitude, id]);
+            console.log('Location updated');
+            res.json({ message: 'Location updated' });
+        } catch (error) {
+            console.error('Server error:', error);
+        }
     }
 }
+    
 
 module.exports = vehicleController;

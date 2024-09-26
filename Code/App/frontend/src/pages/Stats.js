@@ -3,6 +3,7 @@ import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import CustomNavbar from '../components/Navbar';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import moment from 'moment';
 
 const StatisticsPage = () => {
     const [data, setData] = useState([]);
@@ -43,8 +44,9 @@ const StatisticsPage = () => {
             console.log('End date:', end);
             const response = await axios.get(`http://localhost:3000/api/stats/getData?start_date=${start}&end_date=${end}`);
             
-            setData(response.data);
-            console.log(data);
+            const sortedData = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+            setData(sortedData);
+            console.log(sortedData);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -60,6 +62,14 @@ const StatisticsPage = () => {
 
     const handleLoadButtonClick = () => {
         fetchData(startDate, endDate);
+    };
+
+    if(!user) {
+        return <div>Loading...</div>;
+    }
+
+    const formatXAxis = (tickItem) => {
+        return moment(tickItem).format('DD-MM-YYYY');
     };
 
     return (
@@ -91,13 +101,11 @@ const StatisticsPage = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                {/* </Row> */}
-                {/* <Row className="mt-4"> */}
                     <Col>
                         <ResponsiveContainer width="100%" height={500}>
                             <LineChart data={data}>
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
+                                <XAxis dataKey="date" tickFormatter={formatXAxis} />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />

@@ -2,13 +2,25 @@ use e-ethelodria;
 
 INSERT INTO Task (id, user_id, date_in, accepted_in, date_out, state, type) 
 VALUES 
-(0x23dccbee979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-01", "2023-12-02", "2023-12-05", "published", "request"),
-(0x23df7da8979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-03", "2023-12-04", "2023-12-07", "published", "request"),
-(0x23e0e382979011eeb08490c11b3fede5, 0x3e3ae57a978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", "2023-12-10", "pending", "request"),
-(0x23e2f28a979011eeb08490c11b3fede5, 0x3e3ae724978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "published", "request"),
-(0x23e45896979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-03", "2023-12-04", "2023-12-07", "published", "offering"),
-(0x23e64728979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", "2023-12-10", "published", "offering"),
-(0x23e6f33a979011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-12", "pending", "offering");
+(0x23dccbee979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-01", null, null, "published", "request"),
+(0x23df7da8979011eeb08490c11b3fede5, 0x3e3ab5b8978b11eea1ac8c1645f10bcd, "2023-12-03", null, null, "published", "request"),
+(0x23e0e382979011eeb08490c11b3fede5, 0x3e3ae57a978b11eea1ac8c1645f10bcd, "2023-12-05", "2023-12-06", null, "pending", "request"),
+(0x23e2f28a979011eeb08490c11b3fede5, 0x3e3ae724978b11eea1ac8c1645f10bcd, "2023-12-08", null, null, "published", "request"),
+(0x23e45896979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-03", null, null, "published", "offering"),
+(0x23e64728979011eeb08490c11b3fede5, 0x3e3ae7c8978b11eea1ac8c1645f10bcd, "2023-12-05", null, null, "published", "offering"),
+(0x23e6f33a979011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", null, "pending", "offering"),
+(0x23e6f333339011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-15", "done", "request"),
+(0x23e6f333339011eeb0849055555fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-15", "done", "request"),
+(0x23e44443339011eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2023-12-08", "2023-12-09", "2023-12-17", "done", "offering"),
+
+(0x23e44443344441eeb08490c11b3f15e5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2024-09-08", "2023-12-09", "2023-12-10", "done", "offering"),
+(0x23e44443344441e2308490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2024-09-08", "2023-12-09", "2023-12-10", "done", "request"),
+(0x23e45443344441eeb08490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2024-09-08", "2023-12-09", "2023-12-10", "done", "request"),
+
+(0x23e44443339011eeb04490c11b3fede5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2024-12-09", "2023-12-10", "2023-12-11", "done", "request"),
+(0x23e44443339011eeb08490c11b3fe4e5, 0x3e3ae891978b11eea1ac8c1645f10bcd, "2024-12-10", "2023-12-11", "2023-12-12", "done", "offering");
+
+
 
 INSERT INTO Task_List (id, task)
 VALUES  

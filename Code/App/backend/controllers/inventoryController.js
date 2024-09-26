@@ -52,7 +52,7 @@ const inventoryController = {
             // Add the product name from the Product table
             for (const row of rows) {
                 const [product] = await pool.query('SELECT name FROM Product WHERE id = ?', [row.product]);
-                row.product = product[0].name;
+                row.name = product[0].name;
             }
             
             res.json(rows);

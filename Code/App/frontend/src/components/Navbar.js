@@ -16,28 +16,27 @@ const CustomNavbar = ({ user }) => {
       <Container>
         <Navbar.Brand href="#home">e-ethelodria</Navbar.Brand>
         <Nav className="me-auto">
-          {user && (user.is_admin || user.is_diasostis) && (
+          {(user.is_admin || user.is_diasostis) ? (
             <>
             <Nav.Link onClick={() => navigate('/map')}>Χάρτης</Nav.Link>
             </>
-          )}
+          ):null}
           
-          {user && user.is_admin && (
+          {user.is_admin ? (
             <>
-              <Nav.Link onClick={() => navigate('/warehouse-management')}>Διαχείριση Αποθήκης</Nav.Link>
+              <Nav.Link onClick={() => navigate('/warehouse-management')}>Διαχείριση</Nav.Link>
               <Nav.Link onClick={() => navigate('/stats')}>Στατιστικά</Nav.Link>
-              <Nav.Link onClick={() => navigate('/rescuer-management')}>Λογαριασμοί Διασωστών</Nav.Link>
-              <Nav.Link href="#create-account">Ανακοινώσεις</Nav.Link>
+              <Nav.Link onClick={() => navigate('/rescuer-management')}>Λογαριασμοί</Nav.Link>
+              <Nav.Link onClick={() => navigate('/admin/announcements')}>Ανακοινώσεις</Nav.Link>
             </>
-          )}
+          ):null}
           
-          {user && user.is_diasostis && (
+          {user.is_diasostis ? (
             <>
-              <Nav.Link onClick={() => navigate('/vehicle-management')}>Διαχείριση Φορτίου</Nav.Link>
-              <Nav.Link onClick={() => navigate('/map')}>Φορτίο</Nav.Link>
+              <Nav.Link onClick={() => navigate('/vehicle-management')}>Φορτίο</Nav.Link>
               <Nav.Link href="#create-account">Εργασίες</Nav.Link>
             </>
-          )}
+          ):null}
         </Nav>
         <Nav>
           {user?.username && <Nav.Link href="#user">{user.username}</Nav.Link>}

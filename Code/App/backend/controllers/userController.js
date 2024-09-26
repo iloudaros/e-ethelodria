@@ -149,8 +149,74 @@ const userController = {
       console.error('Server error:', error);
       res.status(500).json({ message: 'Server error', error });
     }
-  }
+  },
 
+  getRescuerTasks: async (req, res) => {
+    const { id } = req.params;
+    console.log('Received rescuer tasks request for ID:', id);
+    try {
+      const [rows] = await pool.query('SELECT hex(task) as id FROM Task_List WHERE id = UUID_TO_BIN(?)', [id]);
+      console.log('Rescuer tasks:', rows);
+      res.json(rows);
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+  },
+
+  createRescuerTask: async (req, res) => {
+    const { rescuerId, taskId } = req.body;
+    console.log('Received rescuer task delegation request for rescuer ID:', rescuerId, 'and task ID:', taskId);
+
+    //get the id of the vehicle 
+  
+    // check if the vehicle exists and and the task to its task list
+    try{
+      const [rows] = await pool.query('SELECT hex(id) as id FROM Vehicle WHERE owner = UUID_TO_BIN(?)', [rescuerId]);
+      vehicleId = rows[0].id;
+      if (rows.length === 0) {
+        console.log('Rescuer is not the owner of any vehicle');
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+
+    console.log('Vehicle found:', vehicleId);
+
+    try{
+      const [rows] = await pool.query('SELECT * FROM Vehicle WHERE id = UUID_TO_BIN(?)', [vehicleId]);
+      if (rows.length === 0) {
+        console.log('Vehicle not found');
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+      await pool.query('INSERT INTO Task_List (id, task) VALUES (UUID_TO_BIN(?), UUID_TO_BIN(?))', [vehicleId, taskId]);
+      console.log('Task delegated');
+      res.json({ message: 'Task delegated' });
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+
+    // update the task state to "pending"
+    try {
+      await pool.query('UPDATE Task SET state = "pending" WHERE id = UUID_TO_BIN(?)', [taskId]);
+      console.log('Task status updated to "pending"');
+    } catch (error) {
+      console.error('Server error:', error);
+    }
+
+    // add todays date to the field "accepted_in" of the task
+    try {
+      await pool.query('UPDATE Task SET accepted_in = CURDATE() WHERE id = UUID_TO_BIN(?)', [taskId]);
+      console.log('Task accepted date updated');
+        } catch (error) {
+      console.error('Server error:', error);
+    }
+  
+
+  }
   
 };
 

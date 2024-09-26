@@ -11,7 +11,8 @@ const inventoryRoutes = require('./routes/inventoryRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const offerRoutes = require('./routes/offerRoutes');
-const statsRoutes = require('./routes/statsRoutes')
+const statsRoutes = require('./routes/statsRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -52,6 +53,9 @@ app.use('/api/offers', offerRoutes);
 
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/stats στο statsRoutes
 app.use('/api/stats', statsRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/task στο taskRoutes
+app.use('/api/tasks', taskRoutes);
 
 
 

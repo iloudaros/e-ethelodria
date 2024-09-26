@@ -15,5 +15,7 @@ router.get('/rescuers', userController.getRescuers);
 router.post('/new/rescuer', userController.createRescuer);
 router.post('/reset-password/:id', userController.resetPassword);
 router.delete('/delete/:id', userController.deleteUser);
+router.get('/rescuerTasks/:id', userController.getRescuerTasks);
+router.post('/rescuer/newTask', userController.createRescuerTask);
 
 module.exports = router;
