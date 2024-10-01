@@ -126,7 +126,36 @@ const inventoryController = {
             res.status(500).json({ message: 'Server error', error });
         }
         res.json({ message: 'Quantity changed successfully' });
-    }
+    },
+
+    // This method lets us add a product to the inventory
+    addProduct: async (req, res) => {
+        const { id, productId, quantity } = req.body;
+        console.log('Received addProduct request for id:', id, 'product:', productId, 'quantity:', quantity);
+        try {
+
+            // from the user id, get the id of the base
+            const [base] = await pool.query('SELECT id FROM `Base` WHERE admin = UUID_TO_BIN(?)', id);
+            baseId = base[0].id;
+
+
+
+            // Check if the product exists in the inventory
+            const [rows] = await pool.query('SELECT quantity FROM `Product_List` WHERE id = ? AND product = ?', [baseId, productId]);
+            if (rows.length === 0) {
+                // If the product does not exist in the inventory, add it
+                await pool.query('INSERT INTO `Product_List` (id, product, quantity) VALUES (?, ?, ?)', [baseId, productId, quantity]);
+            }
+            else {
+                // If the product exists in the inventory, update the quantity
+                await pool.query('UPDATE `Product_List` SET quantity = quantity + ? WHERE id = ? AND product = ?', [quantity, baseId, productId]);
+            }
+        } catch (error) {
+            console.error('Server error:', error);
+            res.status(500).json({ message: 'Server error', error });
+        }
+        res.json({ message: 'Product added successfully' });
+    },
     
 };
 

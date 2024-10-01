@@ -22,30 +22,3 @@ html, body, #root {
   width: 100%;
   height: 100%;
 }
-
-:root {
-  --main-color: rgb(255, 157, 82);
-  --secondary-color-1: rgb(249, 102, 70);
-  --secondary-color-2: rgb(240, 194, 89);
-  --secondary-color-3: rgb(0, 160, 143);
-  --text-color: rgb(25, 71, 85);
-}
-
-body {
-  color: var(--text-color);
-  background-color: var(--main-color);
-}
-
-button {
-  background-color: var(--secondary-color-1);
-  color: var(--text-color);
-}
-
-button.secondary {
-  background-color: var(--secondary-color-2);
-}
-
-button.tertiary {
-  background-color: var(--secondary-color-3);
-}
-

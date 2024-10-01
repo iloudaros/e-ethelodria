@@ -7,5 +7,6 @@ router.get('/all', inventoryController.getInventory);
 router.get('/single/:id', inventoryController.getSingleInventory);
 router.put('/move', inventoryController.moveProduct);
 router.put('/update', inventoryController.changeQuantity);
+router.post('/add', inventoryController.addProduct);
 
 module.exports = router;

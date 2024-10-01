@@ -11,6 +11,8 @@ import Vehicle from './pages/Vehicle'
 import AnnouncementManager from './pages/AnnouncementManager';
 import RequestManagement from './pages/RequestManagement';
 import OfferManagement from './pages/OfferManagement';
+//App.css
+import './App.css';
 
 const App = () => {
   return (
