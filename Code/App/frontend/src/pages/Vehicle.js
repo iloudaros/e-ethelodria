@@ -80,7 +80,7 @@ const Vehicle = () => {
       }
     }
     
-    setNearbyBase(null); // If no base is within 3000 meters
+    setNearbyBase(null); // If no base is within 100 meters
   };
   
   const fetchBaseInventory = (baseId) => {
@@ -279,7 +279,7 @@ const Vehicle = () => {
                   </tbody>
                 </Table>
               </>
-            ) : 'No base was found within 3000 meters.'}
+            ) : 'No base was found within 100 meters.'}
           </Col>
         </Row>
         
