@@ -1,12 +1,16 @@
+// src/pages/Login.js
+
 import React, { useState } from 'react';
 import authService from '../services/authService';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import SignupModal from '../components/SignupModal';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [showSignup, setShowSignup] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -14,16 +18,12 @@ const Login = () => {
     const response = await authService.login(username, password);
     console.log('Login response:', response);
     if (response.message === 'Login successful') {
-      if (response.user.is_diasostis ) {
-
+      if (response.user.is_diasostis) {
         navigate('/map', { state: { user: response.user } });
-
       } else if (response.user.is_admin){
-
         navigate('/warehouse-management', { state: { user: response.user } });
-
       } else {
-        navigate('/vehicle-management', { state: { user: response.user } });
+        navigate('/requests', { state: { user: response.user } });
       }
     } else {
       setMessage(response.message);
@@ -58,8 +58,18 @@ const Login = () => {
           Login
         </Button>
 
+        <Button variant="secondary" className="ms-2" onClick={() => setShowSignup(true)}>
+          Sign Up
+        </Button>
+
         {message && <Alert variant="danger" className="mt-3">{message}</Alert>}
       </Form>
+
+      <SignupModal
+        show={showSignup}
+        handleClose={() => setShowSignup(false)}
+        setMessage={setMessage}
+      />
     </Container>
   );
 };

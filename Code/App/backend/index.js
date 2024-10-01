@@ -13,6 +13,7 @@ const requestRoutes = require('./routes/requestRoutes');
 const offerRoutes = require('./routes/offerRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const announcementRoutes = require('./routes/announcementRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,6 +57,9 @@ app.use('/api/stats', statsRoutes);
 
 // Αναθέτει τις αιτήσεις που ξεκινούν με /api/task στο taskRoutes
 app.use('/api/tasks', taskRoutes);
+
+// Αναθέτει τις αιτήσεις που ξεκινούν με /api/announcements στο announcementRoutes
+app.use('/api/announcements', announcementRoutes);
 
 
 

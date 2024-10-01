@@ -28,6 +28,24 @@ const userController = {
     }
   },
 
+  signup: async (req, res) => {
+    const { username, password, email, name, surname, telephone, } = req.body;
+    try {
+      console.log('Received signup request for:', username);
+      const [rows] = await pool.query('SELECT * FROM User WHERE username = ?', [username]);
+      if (rows.length > 0) {
+        console.log('User already exists');
+        return res.status(400).json({ message: 'User already exists' });
+      }
+      const [result] = await pool.query('INSERT INTO User (username, password, email, name, surname, telephone, longitude, latitude, is_citizen) VALUES (?, ?, ?, ?, ?, ?, ?)', [username, password, email, name, surname, telephone, 37, 23, true]);
+      console.log('User created with ID:', result.insertId);
+      res.status(201).json({ message: 'User created', id: result.insertId });
+    } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+  },
+
   // The method that lets us save the new location of a user
   saveLocation: async (req, res) => {
     const { username, latitude, longitude } = req.body;

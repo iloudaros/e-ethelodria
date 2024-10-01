@@ -25,6 +25,7 @@
     "react-router": "^6.11.0",
     "react-router-dom": "^6.11.0",
     "react-scripts": "^5.0.1",
+    "react-select": "^5.8.1",
     "recharts": "",
     "web-vitals": "^3.0.4",
     "which": "^4.0.0"

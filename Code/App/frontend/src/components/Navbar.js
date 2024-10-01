@@ -34,8 +34,15 @@ const CustomNavbar = ({ user }) => {
           {user.is_diasostis ? (
             <>
               <Nav.Link onClick={() => navigate('/vehicle-management')}>Φορτίο</Nav.Link>
-              <Nav.Link href="#create-account">Εργασίες</Nav.Link>
             </>
+          ):null}
+
+          {user.is_citizen ? (
+            <>
+              <Nav.Link onClick={() => navigate('/requests')}>Αιτήματα</Nav.Link>
+              {/* Placeholder for offers */}
+              <Nav.Link onClick={() => navigate('/offers')}>Προσφορές</Nav.Link>
+              </>
           ):null}
         </Nav>
         <Nav>

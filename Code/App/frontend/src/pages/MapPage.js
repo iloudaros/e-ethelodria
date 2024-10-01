@@ -143,6 +143,8 @@ const MapPage = () => {
         }
     }, [navigate]);
     
+    
+    //Αν ο χρήστης είναι Διασώστης, τότε θα πρέπει να πάρουμε τα tasks του
     useEffect(() => {
         if (user && user.is_diasostis && vehicles) {
             // Πρέπει να δούμε ποια είναι τα δικά του tasks
@@ -297,29 +299,6 @@ const MapPage = () => {
                 return null; // Or return a loading spinner if you prefer
             }
             
-            console.log('Filtered Requests:', requests.filter(request => {
-                if (user.is_diasostis) {
-                    // Show only unassigned requests or those assigned to the current rescuer
-                    if (request.state === 'published' || (request.state === 'pending' && tasks.some(task => task.id === request.id))) {
-                        return true;
-                    }
-                } else {
-                    // Show all requests for admin
-                    if (filters[toggleOptions.requestsPending] && request.state === 'published') {
-                        return true;
-                    }
-                    if (filters[toggleOptions.requestsAccepted] && request.state !== 'published') {
-                        return true;
-                    }
-                    
-                    // Do not show requests that have a state of 'done'
-                    if (request.state === 'done') {
-                        return false;
-                    }
-                }
-                return false;
-            }));
-            
             return (
                 <>
                 <MarkerClusterGroup chunkedLoading>
@@ -327,19 +306,17 @@ const MapPage = () => {
                     .filter(request => {
                         if (user.is_diasostis) {
                             // Show only unassigned requests or those assigned to the current rescuer
-                            if (request.state === 'published' || (request.state === 'pending' && tasks.some(task => task.id === request.id))) {
+                            if (request.state === 'published' || ( filters[toggleOptions.requestsAccepted] && request.state === 'pending' && tasks.some(task => task.id === request.id))) {
                                 return true;
                             }
-                        } else {
-                            // Show all requests for admin
-                            if (filters[toggleOptions.requestsPending] && request.state === 'published') {
-                                return true;
-                            }
-                            if (filters[toggleOptions.requestsAccepted] && request.state !== 'published') {
-                                return true;
-                            }
-                            
                         }
+                        if (filters[toggleOptions.requestsPending] && request.state === 'published') {
+                            return true;
+                        }
+                        if (user.is_admin && filters[toggleOptions.requestsAccepted] && request.state === 'pending') {
+                            return true;
+                        }
+                        
                         return false;
                     })
                     .map((request) => (
@@ -366,7 +343,7 @@ const MapPage = () => {
                         </tr>
                         {request.state == 'pending' && (
                             <tr>
-                            <td>Κατανομή:</td>
+                            <td>Ανάληψη:</td>
                             <td>{request.accepted_in.split('T')[0]}</td>
                             </tr>)}
                             </tbody>
@@ -391,27 +368,6 @@ const MapPage = () => {
                         if (!offers || !tasks) {
                             return null; // Or return a loading spinner if you prefer
                         }
-                        console.log('Filtered Offers:', offers.filter(offer => {
-                            if (user.is_diasostis) {
-                                // Show only unassigned offers or those assigned to the current rescuer
-                                if (offer.state === 'published' || tasks.some(task => task.id === offer.id)) {
-                                    return true;
-                                }
-                            } else {
-                                // Show all offers for admin
-                                if (filters[toggleOptions.offersPending] && offer.state === 'published') {
-                                    return true;
-                                }
-                                if (filters[toggleOptions.offersAccepted] && offer.state !== 'published') {
-                                    return true;
-                                }
-                                // Do not show offers that have a state of 'done'
-                                if (offer.state === 'done') {
-                                    return false;
-                                }
-                            }
-                            return false;
-                        }));
                         
                         return (
                             <>
@@ -420,18 +376,18 @@ const MapPage = () => {
                                 .filter(offer => {
                                     if (user.is_diasostis) {
                                         // Show only unassigned offers or those assigned to the current rescuer
-                                        if (offer.state === 'published' || tasks.some(task => task.id === offer.id)) {
+                                        if (offer.state === 'published' || (filters[toggleOptions.offersAccepted] && offer.state === 'pending' && tasks.some(task => task.id === offer.id))) {
                                             return true;
                                         }
-                                    } else {
-                                        // Show all offers for admin
-                                        if (filters[toggleOptions.offersPending] && offer.state === 'published') {
-                                            return true;
-                                        }
-                                        if (filters[toggleOptions.offersAccepted] && offer.state !== 'published') {
-                                            return true;
-                                        }
+                                    } 
+                                    // Show all offers for admin
+                                    if (filters[toggleOptions.offersPending] && offer.state === 'published') {
+                                        return true;
                                     }
+                                    if (user.is_admin && filters[toggleOptions.offersAccepted] && offer.state === 'pending') {
+                                        return true;
+                                    }
+                                    
                                     return false;
                                 })
                                 .map((offer) => (
@@ -457,7 +413,7 @@ const MapPage = () => {
                                     <td>{offer.date_in.split('T')[0]}</td>
                                     </tr>
                                     {offer.state == 'pending' && <tr>
-                                        <td>Κατανομή:</td>
+                                        <td>Ανάληψη:</td>
                                         <td>{offer.accepted_in.split('T')[0]}</td>
                                         </tr>}
                                         
@@ -504,8 +460,10 @@ const MapPage = () => {
                                 
                                 // Handler for updating vehicle location
                                 const handleConfirmVehicleLocation = async () => {
+                                    console.log('Vehicle location before update:', theVehicle);
+                                    console.log('New vehicle location:', newVehicleLocation);
+                                    
                                     try {
-                                        console.log('Vehicle location before update:', theVehicle);
                                         await axios.post('http://localhost:3000/api/vehicle/updateLocation', {
                                             id: theVehicle.id,
                                             latitude: newVehicleLocation.latitude,
@@ -513,7 +471,7 @@ const MapPage = () => {
                                         });
                                         console.log('Vehicle location updated in the database');
                                         setShowModal(false);
-                                        this.forceUpdate()
+                                        window.location.reload();
                                     } catch (error) {
                                         console.error('Error updating vehicle location:', error);
                                     }
@@ -531,15 +489,20 @@ const MapPage = () => {
                                     setShowModal(true);
                                 };
                                 
-                                if (!user || !position || !vehicles || !requests.length || !offers.length || !base || !tasks) {
+                                if (!user || !position || !vehicles || !requests || !offers || !base || !tasks) {
                                     return <p>Loading...</p>;
                                 }
                                 
+
+
+
+
+
                                 return (
                                     <>
+                                    <Container fluid className="p-0 d-flex flex-column" style={{ height: '100vh' }}>
                                     <CustomNavbar user={user} />
-                                    
-                                    <Container fluid className="p-0">
+
                                     <Card style={{ margin: '20px', padding: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                                     <Card.Body>
                                     <Form>
@@ -610,8 +573,8 @@ const MapPage = () => {
                                         </Card.Body>
                                         </Card>
                                         
-                                        <div style={{ position: 'relative' }}>
-                                        <MapContainer center={position} zoom={13} style={{ height: '84vh' }}>
+                                        <div style={{ position: 'relative', flexGrow: 1 }}>
+                                        <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%' }}>
                                         <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -677,4 +640,3 @@ const MapPage = () => {
                                 };
                                 
                                 export default MapPage;
-                                

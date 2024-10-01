@@ -8,7 +8,9 @@ import PrivateRoute from './components/PrivateRoute';
 import Stats from './pages/Stats';
 import RescuerManagement from './pages/RescuerManagement';
 import Vehicle from './pages/Vehicle'
-import AnnouncementManager from './pages/Announcements';
+import AnnouncementManager from './pages/AnnouncementManager';
+import RequestManagement from './pages/RequestManagement';
+import OfferManagement from './pages/OfferManagement';
 
 const App = () => {
   return (
@@ -22,6 +24,9 @@ const App = () => {
         <Route path="/rescuer-management" element={<PrivateRoute component={RescuerManagement} />} />
         <Route path="/vehicle-management" element={<PrivateRoute component={Vehicle}/>} />  
         <Route path="/admin/announcements" element={<PrivateRoute component={AnnouncementManager } />} />
+        <Route path="/requests" element={<PrivateRoute component={RequestManagement } />} />
+        <Route path="/offers" element={<PrivateRoute component={OfferManagement } />} />
+        <Route path="*" element={<Welcome/>} />
       </Routes>
     </Router>
   );

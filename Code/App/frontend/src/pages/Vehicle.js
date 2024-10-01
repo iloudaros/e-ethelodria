@@ -4,34 +4,7 @@ import axios from 'axios';
 import CustomNavbar from '../components/Navbar';
 import doubleArrow from '../assets/double_arrow.png';
 import { BoxArrowInDown, BoxArrowInUp, Truck } from 'react-bootstrap-icons';
-
-// Helper function to calculate distance between two coordinates using Haversine formula
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  // Convert degrees to radians
-  function toRadians(degrees) {
-      return degrees * (Math.PI / 180);
-  }
-
-  // Convert input coordinates from degrees to radians
-  lat1 = toRadians(lat1);
-  lon1 = toRadians(lon1);
-  lat2 = toRadians(lat2);
-  lon2 = toRadians(lon2);
-
-  // Haversine formula
-  const dLat = lat2 - lat1;
-  const dLon = lon2 - lon1;
-
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1) * Math.cos(lat2) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  const distance = 6371 * c; // Earth's radius in km
-
-  return distance * 1000; // Convert to meters
-}
+import L from 'leaflet'; // Import Leaflet
 
 const Vehicle = () => {
   const [vehicle, setVehicle] = useState(null);
@@ -70,33 +43,36 @@ const Vehicle = () => {
       .then(response => {
         setBases(response.data);
         console.log('Bases:', response.data);
-        console.log(response.data);
-        checkProximity(response.data);
       })
       .catch(error => {
         console.error('Error fetching bases:', error);
       });
   };
+
+  useEffect(() => {
+    if (vehicle) {
+      checkProximity(bases);
+    }
+  }, [vehicle, bases]);
+
   
   const checkProximity = (bases) => {
     // Assuming we have the rescuer's current location
-    const rescuerLocation = {
-      latitude: user.latitude,
-      longitude: user.longitude
-    };
+    const rescuerLocation = L.latLng(vehicle.latitude, vehicle.longitude);
     
     console.log('Rescuer Location:', rescuerLocation);
+    console.log('Checking proximity for bases:', bases);
 
     for (let base of bases) {
-      const distance = calculateDistance(
-        rescuerLocation.latitude,
-        rescuerLocation.longitude,
-        base.latitude,
-        base.longitude
-      );
+      const baseLocation = L.latLng(base.latitude, base.longitude);
+      console.log('Checking proximity for...');
+      console.log('Base Location:', baseLocation);
+      console.log('Rescuer Location:', rescuerLocation);
+
+      const distance = rescuerLocation.distanceTo(baseLocation); // Calculate distance in meters
       console.log('Distance to base:', distance);
       
-      if (distance <= 3000) {
+      if (distance <= 100) {
         console.log('Base within 100 meters:', base);
         setNearbyBase(base);
         fetchBaseInventory(base.id);
@@ -104,7 +80,7 @@ const Vehicle = () => {
       }
     }
     
-    setNearbyBase(null); // If no base is within 100 meters
+    setNearbyBase(null); // If no base is within 3000 meters
   };
   
   const fetchBaseInventory = (baseId) => {
@@ -303,7 +279,7 @@ const Vehicle = () => {
                   </tbody>
                 </Table>
               </>
-            ) : 'No base was found within 100 meters.'}
+            ) : 'No base was found within 3000 meters.'}
           </Col>
         </Row>
         

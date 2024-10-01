@@ -17,5 +17,6 @@ router.post('/reset-password/:id', userController.resetPassword);
 router.delete('/delete/:id', userController.deleteUser);
 router.get('/rescuerTasks/:id', userController.getRescuerTasks);
 router.post('/rescuer/newTask', userController.createRescuerTask);
+router.post('/signup', userController.signup);
 
 module.exports = router;

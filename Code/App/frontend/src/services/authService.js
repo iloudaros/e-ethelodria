@@ -31,7 +31,26 @@ const logout = () => {
   localStorage.removeItem('user');
 };
 
+
+const signup = async (userData) => {
+  try {
+    const response = await axios.post(API_URL + 'signup', userData);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return error.response.data;
+    } else if (error.request) {
+      console.error('No response received:', error.request);
+      return { message: 'No response from server' };
+    } else {
+      console.error('Error', error.message);
+      return { message: 'Request error' };
+    }
+  }
+};
+
 export default {
   login,
   logout,
+  signup,
 };

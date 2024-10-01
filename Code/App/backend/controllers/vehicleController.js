@@ -103,7 +103,7 @@ const vehicleController = {
         const {id, latitude, longitude} = req.body;
         console.log('Received location update request for:', id);
         try {
-            await pool.query('UPDATE Base SET latitude = ?, longitude = ? WHERE id = UUID_TO_BIN(?)', [latitude, longitude, id]);
+            await pool.query('UPDATE Vehicle SET latitude = ?, longitude = ? WHERE id = UUID_TO_BIN(?)', [latitude, longitude, id]);
             console.log('Location updated');
             res.json({ message: 'Location updated' });
         } catch (error) {

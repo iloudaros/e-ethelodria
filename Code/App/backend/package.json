@@ -11,7 +11,8 @@
     "cors": "",
     "dotenv": "",
     "express": "",
-    "mysql2": ""
+    "mysql2": "",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "nodemon": ""

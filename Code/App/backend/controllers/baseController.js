@@ -7,7 +7,7 @@ const baseController = {
         console.log('Received base location request for admin:', admin);
         try {
             const [rows] = await pool.query('SELECT hex(id) as id, latitude, longitude FROM Base WHERE admin = UUID_TO_BIN(?)', [admin]);
-            console.log('Query executed successfully:', rows);
+            console.log('Query executed successfully:', rows.length);
             if (rows.length === 0 ) {
                 console.log('Base not found');
                 return res.status(404).json({ message: 'Base not found' });

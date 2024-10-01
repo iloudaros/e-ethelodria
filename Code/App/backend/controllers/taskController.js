@@ -53,7 +53,7 @@ const taskController = {
         
         // Update the state of the task
         try {
-            await pool.query('UPDATE Task SET state = "pending" WHERE id = UUID_TO_BIN(?)', [id]);
+            await pool.query('UPDATE Task SET state = "published" WHERE id = UUID_TO_BIN(?)', [id]);
             console.log('Task state updated');
             res.json({ message: 'Task cancelled' });
         } catch (error) {
