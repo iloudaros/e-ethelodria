@@ -37,7 +37,7 @@ const userController = {
         console.log('User already exists');
         return res.status(400).json({ message: 'User already exists' });
       }
-      const [result] = await pool.query('INSERT INTO User (username, password, email, name, surname, telephone, longitude, latitude, is_citizen) VALUES (?, ?, ?, ?, ?, ?, ?)', [username, password, email, name, surname, telephone, 37, 23, true]);
+      const [result] = await pool.query('INSERT INTO User (username, password, email, name, surname, telephone, longitude, latitude, is_citizen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [username, password, email, name, surname, telephone, 37.983810, 23.727539, true]);
       console.log('User created with ID:', result.insertId);
       res.status(201).json({ message: 'User created', id: result.insertId });
     } catch (error) {
